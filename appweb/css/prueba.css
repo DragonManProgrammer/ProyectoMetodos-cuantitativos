@@ -9,22 +9,31 @@
     background-repeat: no-repeat;
     background-position: center;
 }
+
 .fondo::before {
-    content: ""; /* Es obligatorio en ::before y ::after */
-    position: fixed; /* Se fija a la pantalla completa */
+    content: "";
+    /* Es obligatorio en ::before y ::after */
+    position: fixed;
+    /* Se fija a la pantalla completa */
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba(10, 15, 25, 0.6); /* Fondo negro con transparencia */
-    z-index: -1; /* Lo manda detrás del contenido principal */
+    background-color: rgba(10, 15, 25, 0.6);
+    /* Fondo negro con transparencia */
+    z-index: -1;
+    /* Lo manda detrás del contenido principal */
 }
 
 .card {
-  background-color: rgba(255, 255, 255, 0.85) !important; /* Blanco translúcido */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Sombra suave */
-  border-radius: 1rem; /* Bordes redondeados */
-  backdrop-filter: blur(1px); /* Efecto de desenfoque del fondo */
+    background-color: rgba(255, 255, 255, 0.85) !important;
+    /* Blanco translúcido */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    border-radius: 1rem;
+    /* Bordes redondeados */
+    backdrop-filter: blur(1px);
+    /* Efecto de desenfoque del fondo */
 }
 
 
@@ -36,13 +45,13 @@ h2 {
 
 /* Estilos para tablas de simulación y probabilidades */
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  background-color: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  overflow: hidden;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 
@@ -59,12 +68,12 @@ th {
 }
 
 tbody tr:nth-child(odd) td {
-  background-color: rgba(240, 248, 255, 0.65);
+    background-color: rgba(240, 248, 255, 0.65);
 }
 
 tfoot td {
-  font-weight: bold;
-  color: #201e1e !important; 
+    font-weight: bold;
+    color: #201e1e !important;
 }
 
 /* Botones de acción en tablas y formularios */
@@ -82,22 +91,37 @@ button:hover {
 }
 
 .btn-generar {
-  background: linear-gradient(90deg, #115561 0%, #15655d 100%);
-  color: white;
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 30px;
-  box-shadow: 0 4px 12px rgba(54, 162, 235, 0.3);
-  cursor: pointer;
-  transition: all 0.3s ease;
+    background: linear-gradient(90deg, #115561 0%, #15655d 100%);
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(54, 162, 235, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .btn-generar:hover {
-  background: linear-gradient(90deg, #0a3e39 0%, #064f4f 100%);
-  box-shadow: 0 6px 16px rgba(54, 162, 235, 0.4);
-  transform: scale(1.03);
+    background: linear-gradient(90deg, #0a3e39 0%, #064f4f 100%);
+    box-shadow: 0 6px 16px rgba(54, 162, 235, 0.4);
+    transform: scale(1.03);
+}
+
+.btn-resultados {
+    background: linear-gradient(90deg, #17474f 0%, #0e514a 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+
+}
+
+.btn-resultados:hover {
+    background: linear-gradient(90deg, #0a2b27 0%, #114747 100%);
+    transform: scale(1.03);
+    color: white;
 }
 
 /* Celdas editables resaltadas al enfocar */
@@ -136,7 +160,7 @@ td[contenteditable="true"]:focus {
     /* margin: 25px; */
 }
 
-.tituloFondo{
+.tituloFondo {
     background-color: #04373ac0;
     border-radius: 0.5rem;
     color: rgb(219, 232, 224);
@@ -154,19 +178,19 @@ td[contenteditable="true"]:focus {
 }
 
 .afectacion-celda {
-  /* background-color: rgba(255, 255, 255, 0.4); */
-  font-weight: 500;
-  color: #000;
-  padding: 6px;
-  display: inline-block;
-  min-width: 40px;
-  text-align: center;
-  border-radius: 6px;
+    /* background-color: rgba(255, 255, 255, 0.4); */
+    font-weight: 500;
+    color: #000;
+    padding: 6px;
+    display: inline-block;
+    min-width: 40px;
+    text-align: center;
+    border-radius: 6px;
 }
 
 .afectacion-celda:focus {
-  /* background-color: #d4eef0; */
-  outline: none;
+    /* background-color: #d4eef0; */
+    outline: none;
 }
 
 
@@ -188,9 +212,9 @@ td[contenteditable="true"]:focus {
 }
 
 .evento-select {
-  min-width: 120px;
-  border-radius: 8px;
-  padding: 3px 6px;
+    min-width: 120px;
+    border-radius: 8px;
+    padding: 3px 6px;
 }
 
 /* Título del modal */
@@ -263,7 +287,7 @@ td[contenteditable="true"]:focus {
 /* Modal styles para resultados promedio */
 .custom-modal {
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(141, 6, 6, 0.2);
     border: none;
 }
 
@@ -323,7 +347,7 @@ td[contenteditable="true"]:focus {
 .card-promedio {
     background: rgba(30, 40, 60, 0.92);
     border-radius: 18px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
     padding: 1.2rem 1.5rem 1rem 1.5rem;
     margin-bottom: 1rem;
     color: #f8f9fa;
@@ -352,7 +376,8 @@ td[contenteditable="true"]:focus {
     border-bottom: none;
 }
 
-.icono-prom, .icono-item {
+.icono-prom,
+.icono-item {
     font-size: 1.2em;
     vertical-align: middle;
     color: #ffe066;
