@@ -80,43 +80,66 @@
                     <div class="card shadow">
                         <div class="card-body">
                             <h2 class="tituloBase titulo h4 mb-3">Rango para números aleatorios</h2>
+
                             <form class="row g-3 align-items-end">
-                                <!-- Campo para el valor mínimo -->
-                                <div class="col-12 col-md-4">
-                                    <label for="rangoMin" class="form-label">Mín:</label>
-                                    <input type="number" class="form-control" id="rangoMin" value="1">
-                                </div>
-                                <!-- Campo para el valor máximo -->
-                                <div class="col-12 col-md-4">
-                                    <label for="rangoMax" class="form-label">Máx:</label>
-                                    <input type="number" class="form-control" id="rangoMax" value="100">
-                                </div>
-                                <!-- Campo para la cantidad de días a simular -->
-                                <div class="col-12 col-md-4">
-                                    <label for="dias" class="form-label">Cantidad de días:</label>
-                                    <input type="number" class="form-control" id="dias" value="15">
+
+                                <div class="col-12 mt-4">
+                                    <div class="row">
+
+                                        <!-- Campo para el valor mínimo -->
+                                        <div class="col-md-3">
+                                            <label for="rangoMin" class="form-label">Mín:</label>
+                                            <input type="number" class="form-control" id="rangoMin" value="1">
+                                        </div>
+                                        <!-- Campo para el valor máximo -->
+                                        <div class="col-md-3">
+                                            <label for="rangoMax" class="form-label">Máx:</label>
+                                            <input type="number" class="form-control" id="rangoMax" value="100">
+                                        </div>
+                                        <!-- Campo para la cantidad de días a simular -->
+                                        <div class="col-md-3">
+                                            <label for="dias" class="form-label">Cantidad de días:</label>
+                                            <input type="number" class="form-control" id="dias" value="15">
+                                        </div>
+
+
+                                        <!-- Botón para generar la simulación -->
+                                        <div class="col-12 col-md-3 d-grid">
+                                            <button type="button" class="btn-generar btn-primary" id="btnGenerar">
+                                                Generar simulación
+                                            </button>
+                                        </div>
+
+                                    </div>
                                 </div>
 
                                 <!-- Costos de operación configurables -->
                                 <div class="col-12 mt-4">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="costoInputRetraso" class="form-label">Costo por barcaza
                                                 retrasada:</label>
                                             <input type="number" class="form-control" id="costoInputRetraso"
                                                 value="800">
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="costoInputEstadia" class="form-label">Costo por estadía (noche):</label>
+                                        <div class="col-md-3">
+                                            <label for="costoInputEstadia" class="form-label">Costo por estadía
+                                                (noche):</label>
                                             <input type="number" class="form-control" id="costoInputEstadia"
                                                 value="500">
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="costoInputPerdida" class="form-label">Costo por barcaza
                                                 perdida:</label>
                                             <input type="number" class="form-control" id="costoInputPerdida"
                                                 value="25000">
                                         </div>
+                                        <div class="col-md-3">
+                                            <label for="tiempoMaxEspera" class="form-label">Tiempo máximo de espera
+                                                (días):</label>
+                                            <input type="number" class="form-control" id="tiempoMaxEspera" value="2">
+                                        </div>
+
                                         <!-- Botón para generar la simulación
                                         <div class="col-12 col-md-3 d-grid">
                                             <button type="button" class="btn-generar btn-primary" id="btnGenerar">
@@ -126,14 +149,17 @@
                                     </div>
                                 </div>
 
+
+
+
                                 <!-- Botón para generar la simulación -->
-                                <div class="col-12 d-flex justify-content-center">
+                                <!-- <div class="col-12 d-flex justify-content-center">
                                     <div class="d-grid" style="min-width: 400px;">
                                         <button type="button" class="btn-generar btn-primary w-100" id="btnGenerar">
                                             Generar simulación
                                         </button>
                                     </div>
-                                </div>
+                                </div> -->
 
                             </form>
 
