@@ -193,9 +193,9 @@ function generarSimulacion() {
     totalLlegadas += llegadas;
     totalDescargas += descargas;
     totalADescargarSuma += totalADescargar;
-    totalCostoRetraso += costoRetrasoDia;
-    totalCostoEstadia += costoEstadiaDia;
-    totalCostoPerdida += costoPerdidaDia;
+    // totalCostoRetraso += costoRetrasoDia;
+    // totalCostoEstadia += costoEstadiaDia;
+    // totalCostoPerdida += costoPerdidaDia;
   }
 
   // Actualiza los totales en la tabla de simulación
