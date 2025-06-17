@@ -99,7 +99,7 @@ function generarSimulacion() {
 
     // 2. Identificar y eliminar barcazas perdidas
     const perdidasHoy = colaBarcazas.filter(d => d > tiempoMaxEspera).length;
-    colaBarcazas = colaBarcazas.filter(d => d <= tiempoMaxEspera);
+    colaBarcazas = colaBarcazas.filter(d => d <= tiempoMaxEspera); // eliminar barcazas perdidas
 
     // 3. Calcular retrasos visibles reales (las que aún están en cola)
     const retrasosVisibles = colaBarcazas.length;
@@ -113,16 +113,16 @@ function generarSimulacion() {
     // 6. Aplicar afectación del evento
     let tipoEvento = "ninguno";
     let afectacion = 0;
-    if (tipoEvento === "tormenta") {
+    if (tipoEvento !== "ninguno") {
       descargas = Math.floor(descargas * (1 - afectacion / 100));
-    } else if (tipoEvento === "huelga") {
-      descargas = 0;
     }
 
-    // 7. Descargar barcazas más antiguas
+    // 7. Descargar barcazas más antiguas (las de la cola y las nuevas)
     for (let j = 0; j < descargas && colaBarcazas.length > 0; j++) {
       colaBarcazas.shift();
     }
+
+    //las nuevas q si se descargan lo hacen implicitamente al no entrar a la cola
 
     // 8. Agregar las nuevas no descargadas
     const noDescargadas = totalADescargar - descargas;
@@ -188,7 +188,8 @@ function generarSimulacion() {
 
     // Suma totales para el resumen
     retrasosAnterior = totalADescargar - descargas;
-    totalRetrasos += retrasosAnterior;
+    totalRetrasos += retrasosVisibles;
+
     totalLlegadas += llegadas;
     totalDescargas += descargas;
     totalADescargarSuma += totalADescargar;
@@ -503,9 +504,7 @@ function recalcularYPropagar() {
     const afectacionRaw = row.querySelector(".afectacion-celda")?.textContent || "0";
     const afectacion = parseFloat(afectacionRaw.replace("%", "").trim()) || 0;
 
-    if (tipoEvento === "huelga") {
-      descargas = 0;
-    } else if (tipoEvento !== "ninguno") {
+    if (tipoEvento !== "ninguno") {
       descargas = Math.floor(descargas * (1 - afectacion / 100));
     }
 
