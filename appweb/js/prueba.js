@@ -61,110 +61,91 @@ function generarSimulacion() {
   const min = parseInt(document.getElementById("rangoMin").value);
   const max = parseInt(document.getElementById("rangoMax").value);
   const dias = parseInt(document.getElementById("dias").value);
-  const tbody = document
-    .getElementById("tablaSimulacion")
-    .querySelector("tbody");
+  const tiempoMaxEspera = parseInt(document.getElementById("tiempoMaxEspera").value);
+  const tbody = document.getElementById("tablaSimulacion").querySelector("tbody");
   tbody.innerHTML = "";
 
-  let retrasosAnterior = 0;
   let totalRetrasos = 0,
-    totalLlegadas = 0,
-    totalDescargas = 0,
-    totalADescargarSuma = 0;
-  let totalCostoRetraso = 0,
-    totalCostoEstadia = 0,
-    totalCostoPerdida = 0;
-  totalCostoPerdida = 0;
+      totalLlegadas = 0,
+      totalDescargas = 0,
+      totalADescargarSuma = 0,
+      totalCostoRetraso = 0,
+      totalCostoEstadia = 0,
+      totalCostoPerdida = 0;
 
-  // Costos unitarios
   const { costoPorRetraso, costoPorEstadia, costoPorPerdida } = obtenerCostos();
-
   const resultadosDiarios = [];
+  let colaBarcazas = [];
 
-  let colaBarcazas = []; // arreglo para seguimiento de espera de barcazas
-
-
-  // Simulación día a día
-  // Día actual
   for (let i = 1; i <= dias; i++) {
     const rLlegada = Math.floor(Math.random() * (max - min + 1)) + min;
     const rDescarga = Math.floor(Math.random() * (max - min + 1)) + min;
     const llegadas = calcularLlegadas(rLlegada);
 
-    // Tiempo máximo de espera
-    const tiempoMaxEspera = parseInt(document.getElementById("tiempoMaxEspera").value);
-
-    // 1. Aumentar espera de las que ya estaban
+    // 1. Aumentar tiempos
     colaBarcazas = colaBarcazas.map(d => d + 1);
 
-    // 2. Identificar y eliminar barcazas perdidas
+    // 2. Eliminar pérdidas
     const perdidasHoy = colaBarcazas.filter(d => d > tiempoMaxEspera).length;
-    colaBarcazas = colaBarcazas.filter(d => d <= tiempoMaxEspera); // eliminar barcazas perdidas
+    colaBarcazas = colaBarcazas.filter(d => d <= tiempoMaxEspera);
 
-    // 3. Calcular retrasos visibles reales (las que aún están en cola)
+    // 3. Calcular retrasos VISIBLES antes de llegadas
     const retrasosVisibles = colaBarcazas.length;
 
-    console.log(`Día ${i} - Cola antes de llegadas:`, colaBarcazas);
-console.log(`   Perdidas hoy: ${perdidasHoy}`);
-console.log(`   Retrasos visibles: ${retrasosVisibles}`);
-
-
-    // 4. Calcular total a descargar del día: lo visible + las nuevas llegadas
-    // const llegadas = calcularLlegadas(rLlegada);
+    // 4. Calcular total a descargar
     const totalADescargar = retrasosVisibles + llegadas;
+    const descargasDisponibles = calcularDescargas(rDescarga);
 
-    // 5. Calcular descargas base
-    let descargas = Math.min(totalADescargar, calcularDescargas(rDescarga));
+    let descargas = 0; //contador para saber cuantas barczas se van descargando
 
-    // 6. Aplicar afectación del evento
-    let tipoEvento = "ninguno";
-    let afectacion = 0;
-    if (tipoEvento !== "nin65guno") {
-      descargas = Math.floor(descargas * (1 - afectacion / 100));
-    }
-
-    // 7. Descargar barcazas más antiguas (las de la cola y las nuevas)
-    for (let j = 0; j < descargas && colaBarcazas.length > 0; j++) {
+    // 5. Descargar de la cola 
+    // (contador sabe cuantas descargas se hacen, 
+    // con eso sabemos si queda alguna descarga extra para las q no son de la cola)
+    while (descargas < descargasDisponibles && colaBarcazas.length > 0) {
       colaBarcazas.shift();
+      descargas++;
     }
 
-    //las nuevas q si se descargan lo hacen implicitamente al no entrar a la cola
+    // 6. Descargar de las llegadas (si quedaron descargas extra)
+    const nuevasDescargadas = Math.min(llegadas, descargasDisponibles - descargas);
+    descargas += nuevasDescargadas;
 
-    // 8. Agregar las nuevas no descargadas
-    const noDescargadas = totalADescargar - descargas;
-    for (let j = 0; j < noDescargadas; j++) {
+    // 7. Agregar nuevas no descargadas
+    const nuevasNoDescargadas = llegadas - nuevasDescargadas;
+    for (let j = 0; j < nuevasNoDescargadas; j++) {
       colaBarcazas.push(1);
     }
 
-    // 9. Costos y actualización de estado
+    // 8. Costos
     const costoRetrasoDia = retrasosVisibles * costoPorRetraso;
     const costoEstadiaDia = totalADescargar * costoPorEstadia;
     const costoPerdidaDia = perdidasHoy * costoPorPerdida;
 
+    // 9. Totales
+    totalRetrasos += retrasosVisibles;
+    totalLlegadas += llegadas;
+    totalDescargas += descargas;
+    totalADescargarSuma += totalADescargar;
     totalCostoRetraso += costoRetrasoDia;
     totalCostoEstadia += costoEstadiaDia;
     totalCostoPerdida += costoPerdidaDia;
 
-    retrasosAnterior = colaBarcazas.length;
-
-    // 10. Insertar fila
+    // 10. Mostrar fila
     const fila = document.createElement("tr");
     fila.innerHTML = `
       <td>
         <select class="evento-select">
-            <option value="ninguno" selected>Ninguno</option>
-            <option value="tormenta">Tormenta</option>
-            <option value="huelga">Huelga</option>
-            <option value="otro">Otro</option>
+          <option value="ninguno" selected>Ninguno</option>
+          <option value="tormenta">Tormenta</option>
+          <option value="huelga">Huelga</option>
+          <option value="otro">Otro</option>
         </select>
       </td>
       <td><span contenteditable="false" class="afectacion-celda">0</span>%</td>
       <td>${i}</td>
       <td>
         ${retrasosVisibles}
-        ${perdidasHoy > 0
-        ? `<sup class="text-danger" title="Se fue/ron ${perdidasHoy} barcaza/s por espera prolongada">−${perdidasHoy}</sup>`
-        : ""}
+        ${perdidasHoy > 0 ? `<sup class="text-danger" title="Se fueron ${perdidasHoy} barcaza(s) por exceso de espera">−${perdidasHoy}</sup>` : ""}
       </td>
       <td>${rLlegada}</td>
       <td contenteditable="true">${llegadas}</td>
@@ -173,20 +154,17 @@ console.log(`   Retrasos visibles: ${retrasosVisibles}`);
       <td>${descargas}</td>
       <td class="costoRetraso">${costoRetrasoDia.toLocaleString()}</td>
       <td class="costoEstadia">${costoEstadiaDia.toLocaleString()}</td>
-      <td class="costoPerdida">
-        ${costoPerdidaDia > 0
-          ? `<span title="Costo de ${costoPerdidaDia.toLocaleString()} por ${perdidasHoy} pérdidas">${costoPerdidaDia.toLocaleString()}</span>`
-          : costoPerdidaDia.toLocaleString()}
+      <td class="costoPerdida" title="Costo por ${perdidasHoy} barcaza(s) perdida(s)">
+        ${costoPerdidaDia.toLocaleString()}
       </td>
 
     `;
     tbody.appendChild(fila);
 
-
-    // Guarda los resultados de este día
+    // 11. Guardar resultados
     resultadosDiarios.push({
       dia: i,
-      retrasosDiaAnterior: retrasosAnterior,
+      retrasosDiaAnterior: retrasosVisibles,
       numeroAleatorioLlegadas: rLlegada,
       llegadasNocturnas: llegadas,
       totalADescargar: totalADescargar,
@@ -194,22 +172,11 @@ console.log(`   Retrasos visibles: ${retrasosVisibles}`);
       descargas: descargas,
       costoRetraso: costoRetrasoDia,
       costoEstadia: costoEstadiaDia,
-      costoPerdida: costoPerdidaDia,
+      costoPerdida: costoPerdidaDia
     });
-
-    // Suma totales para el resumen
-    retrasosAnterior = totalADescargar - descargas;
-    totalRetrasos += retrasosVisibles;
-
-    totalLlegadas += llegadas;
-    totalDescargas += descargas;
-    totalADescargarSuma += totalADescargar;
-    // totalCostoRetraso += costoRetrasoDia;
-    // totalCostoEstadia += costoEstadiaDia;
-    // totalCostoPerdida += costoPerdidaDia;
   }
 
-  // Actualiza los totales en la tabla de simulación
+  // Final: actualizar totales y localStorage
   actualizarTotales(
     totalRetrasos,
     totalLlegadas,
@@ -221,29 +188,26 @@ console.log(`   Retrasos visibles: ${retrasosVisibles}`);
     totalCostoPerdida
   );
 
-  // Actualiza la tabla de costos de operación
   actualizarTablaCostosOperacion(
     totalCostoRetraso,
     totalCostoEstadia,
     totalCostoPerdida
   );
 
-  // Guarda promedios y resultados para otros usos (modal/resultados.html)
   const promedios = {
     promedioRetrasos: (totalRetrasos / dias).toFixed(2),
     promedioLlegadas: (totalLlegadas / dias).toFixed(2),
-    promedioDescargas: (totalDescargas / dias).toFixed(2),
+    promedioDescargas: (totalDescargas / dias).toFixed(2)
   };
-  localStorage.setItem(
-    "resultadosSimulacion",
-    JSON.stringify(resultadosDiarios)
-  );
+
+  localStorage.setItem("resultadosSimulacion", JSON.stringify(resultadosDiarios));
   localStorage.setItem("promediosSimulacion", JSON.stringify(promedios));
 
   calcularPeriodosYGuardar(resultadosDiarios);
   observarCambios();
   calcularCostosSimulacion();
 }
+
 
 // =====================
 // Traduce número aleatorio a cantidad de llegadas según reglas del negocio
@@ -482,51 +446,61 @@ function recalcularYPropagar() {
   const tiempoMaxEspera = parseInt(document.getElementById("tiempoMaxEspera").value);
   const { costoPorRetraso, costoPorEstadia, costoPorPerdida } = obtenerCostos();
 
-  let totalRetrasos = 0, totalLlegadas = 0, totalDescargas = 0, totalADescargarSuma = 0;
-  let totalCostoRetraso = 0, totalCostoEstadia = 0, totalCostoPerdida = 0;
+  let totalRetrasos = 0,
+      totalLlegadas = 0,
+      totalDescargas = 0,
+      totalADescargarSuma = 0,
+      totalCostoRetraso = 0,
+      totalCostoEstadia = 0,
+      totalCostoPerdida = 0;
+
   let colaBarcazas = [];
   const resultadosDiarios = [];
 
   for (let i = 0; i < tbody.rows.length; i++) {
     const row = tbody.rows[i];
-
     const rLlegada = parseInt(row.cells[4].innerText) || 0;
     const llegadas = parseInt(row.cells[5].innerText) || 0;
     const rDescarga = parseInt(row.cells[7].innerText) || 0;
 
-    // 1. Aumentar espera de las que ya estaban
+    // 1. Aumentar tiempos en cola
     colaBarcazas = colaBarcazas.map(d => d + 1);
 
-    // 2. Barcazas perdidas hoy
+    // 2. Eliminar barcazas perdidas
     const perdidasHoy = colaBarcazas.filter(d => d > tiempoMaxEspera).length;
     colaBarcazas = colaBarcazas.filter(d => d <= tiempoMaxEspera);
 
-    // 3. Retrasos visibles (cola actual)
+    // 3. Retrasos actuales
     const retrasosVisibles = colaBarcazas.length;
 
-    // 4. Total a descargar
+    // 4. Total a descargar y descargas disponibles
     const totalADescargar = retrasosVisibles + llegadas;
+    const descargasDisponiblesBase = calcularDescargas(rDescarga);
 
-    // 5. Calcular descargas base
-    let descargas = Math.min(totalADescargar, calcularDescargas(rDescarga));
-
-    // 6. Afectación por evento
+    // 5. Afectación por evento
     const tipoEvento = row.querySelector(".evento-select")?.value || "ninguno";
     const afectacionRaw = row.querySelector(".afectacion-celda")?.textContent || "0";
     const afectacion = parseFloat(afectacionRaw.replace("%", "").trim()) || 0;
 
+    let descargasDisponibles = descargasDisponiblesBase;
     if (tipoEvento !== "ninguno") {
-      descargas = Math.floor(descargas * (1 - afectacion / 100));
+      descargasDisponibles = Math.floor(descargasDisponibles * (1 - afectacion / 100));
     }
 
-    // 7. Descargar barcazas
-    for (let j = 0; j < descargas && colaBarcazas.length > 0; j++) {
+    // 6. Descargar de la cola
+    let descargas = 0;
+    while (descargas < descargasDisponibles && colaBarcazas.length > 0) {
       colaBarcazas.shift();
+      descargas++;
     }
 
-    // 8. Agregar nuevas barcazas no descargadas
-    const noDescargadas = totalADescargar - descargas;
-    for (let j = 0; j < noDescargadas; j++) {
+    // 7. Descargar de las nuevas
+    const nuevasDescargadas = Math.min(llegadas, descargasDisponibles - descargas);
+    descargas += nuevasDescargadas;
+
+    // 8. Nuevas no descargadas se van a la cola
+    const nuevasNoDescargadas = llegadas - nuevasDescargadas;
+    for (let j = 0; j < nuevasNoDescargadas; j++) {
       colaBarcazas.push(1);
     }
 
@@ -535,11 +509,11 @@ function recalcularYPropagar() {
     const costoEstadiaDia = totalADescargar * costoPorEstadia;
     const costoPerdidaDia = perdidasHoy * costoPorPerdida;
 
-    // 10. Render fila nuevamente
+    // 10. Actualizar celdas
     row.cells[3].innerHTML = `
       ${retrasosVisibles}
       ${perdidasHoy > 0
-        ? `<sup class="text-danger" title="Se fueron ${perdidasHoy} barcazas por espera prolongada">−${perdidasHoy}</sup>`
+        ? `<sup class="text-danger" title="Se fueron ${perdidasHoy} barcaza(s) por exceso de espera">−${perdidasHoy}</sup>`
         : ""
       }`;
 
@@ -547,9 +521,13 @@ function recalcularYPropagar() {
     row.cells[8].textContent = descargas;
     row.cells[9].textContent = costoRetrasoDia.toLocaleString();
     row.cells[10].textContent = costoEstadiaDia.toLocaleString();
-    row.cells[11].textContent = costoPerdidaDia.toLocaleString();
+    row.cells[11].innerHTML = `
+      <span title="Costo por ${perdidasHoy} barcaza(s) perdida(s)">
+        ${costoPerdidaDia.toLocaleString()}
+      </span>
+    `;
 
-    // 11. Totales
+    // 11. Acumular totales
     totalRetrasos += retrasosVisibles;
     totalLlegadas += llegadas;
     totalDescargas += descargas;
@@ -558,6 +536,7 @@ function recalcularYPropagar() {
     totalCostoEstadia += costoEstadiaDia;
     totalCostoPerdida += costoPerdidaDia;
 
+    // 12. Guardar resultados
     resultadosDiarios.push({
       dia: i + 1,
       retrasosDiaAnterior: retrasosVisibles,
@@ -572,7 +551,7 @@ function recalcularYPropagar() {
     });
   }
 
-  // Actualizar totales
+  // 13. Actualizar totales
   actualizarTotales(
     totalRetrasos,
     totalLlegadas,
@@ -600,11 +579,11 @@ function recalcularYPropagar() {
   localStorage.setItem("promediosSimulacion", JSON.stringify(promedios));
   calcularPeriodosYGuardar(resultadosDiarios);
 
-  // Eventos de sincronización
   window.dispatchEvent(new StorageEvent("storage", { key: "resultadosSimulacion" }));
   window.dispatchEvent(new StorageEvent("storage", { key: "promediosSimulacion" }));
   window.dispatchEvent(new StorageEvent("storage", { key: "periodosSimulacion" }));
 }
+
 
 
 // =====================
