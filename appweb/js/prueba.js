@@ -71,7 +71,8 @@ function generarSimulacion() {
       totalADescargarSuma = 0,
       totalCostoRetraso = 0,
       totalCostoEstadia = 0,
-      totalCostoPerdida = 0;
+      totalCostoPerdida = 0,
+      totalPerdidas = 0;
 
   const { costoPorRetraso, costoPorEstadia, costoPorPerdida } = obtenerCostos();
   const resultadosDiarios = [];
@@ -88,6 +89,8 @@ function generarSimulacion() {
     // 2. Eliminar pérdidas
     const perdidasHoy = colaBarcazas.filter(d => d > tiempoMaxEspera).length;
     colaBarcazas = colaBarcazas.filter(d => d <= tiempoMaxEspera);
+
+    totalPerdidas += perdidasHoy;
 
     // 3. Calcular retrasos VISIBLES antes de llegadas
     const retrasosVisibles = colaBarcazas.length;
@@ -185,7 +188,8 @@ function generarSimulacion() {
     totalADescargarSuma,
     totalCostoRetraso,
     totalCostoEstadia,
-    totalCostoPerdida
+    totalCostoPerdida,
+    totalPerdidas
   );
 
   actualizarTablaCostosOperacion(
@@ -243,9 +247,15 @@ function actualizarTotales(
   totalADescargarSuma = 0,
   totalCostoRetraso = 0,
   totalCostoEstadia = 0,
-  totalCostoPerdida = 0
+  totalCostoPerdida = 0,
+  totalPerdidas
 ) {
-  document.getElementById("totalRetrasos").textContent = retrasos;
+  document.getElementById("totalRetrasos").innerHTML = `
+  ${retrasos}
+  ${typeof totalPerdidas !== "undefined" && totalPerdidas > 0
+    ? `<sup class="text-danger" title="Total de barcazas perdidas por exceso de espera: ">−${totalPerdidas}</sup>`
+    : ""}
+`;
   document.getElementById("totalLlegadas").textContent = llegadas;
   document.getElementById("totalDescargas").textContent = descargas;
   if (document.getElementById("totalADescargar"))
@@ -708,7 +718,10 @@ document.getElementById("btnVerResultados").addEventListener("click", () => {
 // =====================
 window.onload = () => {
   deshabilitarBotonesResultados();
+  const mensajeAdvertencia = document.getElementById("mensajeAdvertencia");
+  mensajeAdvertencia.style.display = "block";
 };
+
 // =====================
 // Evento para generar la simulación y habilitar botones
 // =====================
