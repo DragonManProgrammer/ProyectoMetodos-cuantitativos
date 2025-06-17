@@ -104,7 +104,13 @@ function generarSimulacion() {
     // 3. Calcular retrasos visibles reales (las que aún están en cola)
     const retrasosVisibles = colaBarcazas.length;
 
+    console.log(`Día ${i} - Cola antes de llegadas:`, colaBarcazas);
+console.log(`   Perdidas hoy: ${perdidasHoy}`);
+console.log(`   Retrasos visibles: ${retrasosVisibles}`);
+
+
     // 4. Calcular total a descargar del día: lo visible + las nuevas llegadas
+    // const llegadas = calcularLlegadas(rLlegada);
     const totalADescargar = retrasosVisibles + llegadas;
 
     // 5. Calcular descargas base
@@ -113,7 +119,7 @@ function generarSimulacion() {
     // 6. Aplicar afectación del evento
     let tipoEvento = "ninguno";
     let afectacion = 0;
-    if (tipoEvento !== "ninguno") {
+    if (tipoEvento !== "nin65guno") {
       descargas = Math.floor(descargas * (1 - afectacion / 100));
     }
 
@@ -157,7 +163,7 @@ function generarSimulacion() {
       <td>
         ${retrasosVisibles}
         ${perdidasHoy > 0
-        ? `<sup class="text-danger" title="Se fueron ${perdidasHoy} barcazas por espera prolongada">−${perdidasHoy}</sup>`
+        ? `<sup class="text-danger" title="Se fue/ron ${perdidasHoy} barcaza/s por espera prolongada">−${perdidasHoy}</sup>`
         : ""}
       </td>
       <td>${rLlegada}</td>
@@ -167,7 +173,12 @@ function generarSimulacion() {
       <td>${descargas}</td>
       <td class="costoRetraso">${costoRetrasoDia.toLocaleString()}</td>
       <td class="costoEstadia">${costoEstadiaDia.toLocaleString()}</td>
-      <td class="costoPerdida">${costoPerdidaDia.toLocaleString()}</td>
+      <td class="costoPerdida">
+        ${costoPerdidaDia > 0
+          ? `<span title="Costo de ${costoPerdidaDia.toLocaleString()} por ${perdidasHoy} pérdidas">${costoPerdidaDia.toLocaleString()}</span>`
+          : costoPerdidaDia.toLocaleString()}
+      </td>
+
     `;
     tbody.appendChild(fila);
 
