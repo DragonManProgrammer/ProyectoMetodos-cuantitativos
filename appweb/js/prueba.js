@@ -66,17 +66,28 @@ function generarSimulacion() {
   tbody.innerHTML = "";
 
   let totalRetrasos = 0,
-      totalLlegadas = 0,
-      totalDescargas = 0,
-      totalADescargarSuma = 0,
-      totalCostoRetraso = 0,
-      totalCostoEstadia = 0,
-      totalCostoPerdida = 0,
-      totalPerdidas = 0;
+    totalLlegadas = 0,
+    totalDescargas = 0,
+    totalADescargarSuma = 0,
+    totalCostoRetraso = 0,
+    totalCostoEstadia = 0,
+    totalCostoPerdida = 0,
+    totalPerdidas = 0;
 
   const { costoPorRetraso, costoPorEstadia, costoPorPerdida } = obtenerCostos();
   const resultadosDiarios = [];
   let colaBarcazas = [];
+
+  //guardamos el valor unitario de los costos
+  const parametrosUsuario = {
+    costoRetraso: costoPorRetraso,
+    costoEstadia: costoPorEstadia,
+    costoPerdida: costoPorPerdida,
+    tiempoMaximoEspera: tiempoMaxEspera
+  };
+
+  localStorage.setItem("costosUnitariosSimulacion", JSON.stringify(parametrosUsuario));
+
 
   for (let i = 1; i <= dias; i++) {
     const rLlegada = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -253,8 +264,8 @@ function actualizarTotales(
   document.getElementById("totalRetrasos").innerHTML = `
   ${retrasos}
   ${typeof totalPerdidas !== "undefined" && totalPerdidas > 0
-    ? `<sup class="text-danger" title="Total de barcazas perdidas por exceso de espera: ">−${totalPerdidas}</sup>`
-    : ""}
+      ? `<sup class="text-danger" title="Total de barcazas perdidas por exceso de espera: ">−${totalPerdidas}</sup>`
+      : ""}
 `;
   document.getElementById("totalLlegadas").textContent = llegadas;
   document.getElementById("totalDescargas").textContent = descargas;
@@ -457,12 +468,12 @@ function recalcularYPropagar() {
   const { costoPorRetraso, costoPorEstadia, costoPorPerdida } = obtenerCostos();
 
   let totalRetrasos = 0,
-      totalLlegadas = 0,
-      totalDescargas = 0,
-      totalADescargarSuma = 0,
-      totalCostoRetraso = 0,
-      totalCostoEstadia = 0,
-      totalCostoPerdida = 0;
+    totalLlegadas = 0,
+    totalDescargas = 0,
+    totalADescargarSuma = 0,
+    totalCostoRetraso = 0,
+    totalCostoEstadia = 0,
+    totalCostoPerdida = 0;
 
   let colaBarcazas = [];
   const resultadosDiarios = [];

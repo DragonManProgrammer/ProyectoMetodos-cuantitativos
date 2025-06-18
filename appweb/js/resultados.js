@@ -53,7 +53,8 @@ function mostrarModal(mensaje) {
 function obtenerDatosSimulacion() {
   const resultados = localStorage.getItem("resultadosSimulacion");
   const promedios = localStorage.getItem("promediosSimulacion");
-  if (!resultados || !promedios) {
+  const costos = localStorage.getItem("costosUnitariosSimulacion");
+  if (!resultados || !promedios || !costos) {
     mostrarModal(
       "No se encontraron datos de simulación. Por favor, genere la simulación primero."
     );
@@ -62,6 +63,7 @@ function obtenerDatosSimulacion() {
   return {
     resultados: JSON.parse(resultados),
     promedios: JSON.parse(promedios),
+    costos: JSON.parse(costos),
   };
 }
 
@@ -125,42 +127,31 @@ function calcularTiemposColaSistema(resultados) {
 function llenarCostosAsociados() {
   const datos = obtenerDatosSimulacion();
   if (!datos) return;
-  const { resultados } = datos;
 
-  // Ahora los costos son los mismos que en prueba.js
-  const costoPorRetraso = 800; // Por barcaza retrasada por día
-  const costoOperacion = 500; // Por operación de descarga
-  const costoFijoDiario = 25000; // Costo fijo diario
+  const { costos } = datos;
 
-  // Cálculos a partir de los datos simulados
-  const totalRetrasos = resultados.reduce(
-    (acc, dia) => acc + (dia.retrasosDiaAnterior || 0),
-    0
-  );
-  const totalDescargas = resultados.reduce(
-    (acc, dia) => acc + (dia.descargas || 0),
-    0
-  );
-  const diasSimulados = resultados.length;
+  // Cargar directamente los valores ingresados por el usuario
+  const costoRetraso = costos.costoRetraso;
+  const costoEstadia = costos.costoEstadia;
+  const costoPerdida = costos.costoPerdida;
+  const tiempoMaximoEspera = costos.tiempoMaximoEspera;
 
-  const costoTotalRetrasos = totalRetrasos * costoPorRetraso;
-  const costoTotalOperacion = totalDescargas * costoOperacion;
-  const costoFijoTotal = diasSimulados * costoFijoDiario;
-  const costoGlobal = costoTotalRetrasos + costoTotalOperacion + costoFijoTotal;
+  // Mostrar los valores en la vista
+  document.getElementById("costoRetrasos").textContent = costoRetraso.toFixed(2);
+  document.getElementById("costoEstadia").textContent = costoEstadia.toFixed(2);
+  document.getElementById("costoPerdida").textContent = costoPerdida.toFixed(2);
+  document.getElementById("tiempoEspera").textContent = tiempoMaximoEspera;
+  
+  // Calcular costo global estimado (solo sumando totales diarios por cada barcaza)
+  const resultados = datos.resultados;
+  const totalCostoRetraso = resultados.reduce((acc, r) => acc + r.costoRetraso, 0);
+  const totalCostoEstadia = resultados.reduce((acc, r) => acc + r.costoEstadia, 0);
+  const totalCostoPerdida = resultados.reduce((acc, r) => acc + r.costoPerdida, 0);
+  const costoGlobal = totalCostoRetraso + totalCostoEstadia + totalCostoPerdida;
 
-  document.getElementById("costoRetrasos").textContent =
-    costoPorRetraso.toFixed(2);
-  document.getElementById("costoTotal").textContent =
-    costoTotalRetrasos.toFixed(2);
-  document.getElementById("costoOperacion").textContent =
-    costoOperacion.toFixed(2);
-  document.getElementById("costoTotalOperacion").textContent =
-    costoTotalOperacion.toFixed(2);
-  document.getElementById("costoFijo").textContent = costoFijoDiario.toFixed(2);
-  document.getElementById("costoFijoTotal").textContent =
-    costoFijoTotal.toFixed(2);
   document.getElementById("costoGlobal").textContent = costoGlobal.toFixed(2);
 }
+
 
 // =====================
 // Inicializa los gráficos con los datos obtenidos y muestra los costos calculados
