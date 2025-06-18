@@ -140,7 +140,7 @@ canvas {
 
 /* Botón para ver dashboard con gradiente y sombra */
 .btn-dashboard {
-  background: linear-gradient(90deg, #36a2eb 60%, #4fd1c5 100%);
+  background: linear-gradient(90deg, #4fd1c5 10%, #00796b 100%);
   color: #fff;
   border: none;
   border-radius: 22px;
@@ -155,7 +155,7 @@ canvas {
 }
 
 .btn-dashboard:hover, .btn-dashboard:focus {
-  background: linear-gradient(90deg, #4fd1c5 60%, #36a2eb 100%);
+  background: linear-gradient(90deg, #00796b 60%, #4fd1c5 100%);
   color: #fff;
   box-shadow: 0 4px 16px #36a2eb44;
   text-decoration: none;
@@ -365,3 +365,10 @@ html {
     padding-right: 0.5rem;
   }
 }
+
+/* #graficoCostos {
+  max-width: 800px !important;
+  max-height: 800px !important;
+  margin: 0 auto;
+} */
+

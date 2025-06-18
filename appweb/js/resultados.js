@@ -559,6 +559,98 @@ function inicializarGraficos() {
   }
   document.getElementById("infoTiemposPromedio").textContent =
     `Total de días simulados: ${totalDias}`;
+
+  mostrarGraficoCostosReal();
+}
+
+
+// =====================
+// Mostrar en que se dividen los costos en un grafico pastel
+// =====================
+function mostrarGraficoCostosReal() {
+  const datos = JSON.parse(localStorage.getItem("resultadosSimulacion"));
+  if (!datos || datos.length === 0) return;
+
+  const totalRetraso = datos.reduce((sum, dia) => sum + (dia.costoRetraso || 0), 0);
+  const totalEstadia = datos.reduce((sum, dia) => sum + (dia.costoEstadia || 0), 0);
+  const totalPerdida = datos.reduce((sum, dia) => sum + (dia.costoPerdida || 0), 0);
+
+  const total = totalRetraso + totalEstadia + totalPerdida;
+  const ctx = document.getElementById("graficoCostos").getContext("2d");
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Retraso", "Estadía", "Pérdida"],
+      datasets: [{
+        label: "Costo (USD)",
+        data: [totalRetraso, totalEstadia, totalPerdida],
+        backgroundColor: [
+
+          "rgba(75, 192, 192, 0.7)",   // turquesa
+          "rgba(255, 99, 132, 0.7)",   // rosado
+          "hsla(207, 71.20%, 55.10%, 0.70)"  // azul
+
+        ],
+        borderColor: [
+
+          "rgba(75, 192, 192, 1)",
+          "rgba(255, 99, 132, 1)",
+          "hsla(207, 71.20%, 55.10%, 0.70)",
+
+        ],
+        borderWidth: 2,
+        borderRadius: 10,
+
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: "Costos Totales",
+          font: { size: 22 }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const val = ctx.raw;
+              const pct = ((val / total) * 100).toFixed(1);
+              return `${ctx.label}: $${val.toLocaleString()} (${pct}%)`;
+            }
+          }
+        },
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: "Costos",
+            font: { size: 16 }
+          }
+        },
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "Costo en USD",
+            font: { size: 16 }
+          }
+        }
+      }
+    }
+  });
+  // Crear y mostrar el total debajo del gráfico
+  const divTotal = document.createElement("div");
+  divTotal.style = "margin-top: 16px; font-size: 1.1rem; font-weight: bold; text-align: center; color: #2d3748;";
+  divTotal.textContent = `Total de costos: $${total.toLocaleString()}`;
+
+  // Insertar debajo del canvas
+  ctx.canvas.parentNode.appendChild(divTotal);
 }
 
 // =====================
@@ -589,7 +681,7 @@ function mostrarComparacionPeriodos() {
   const ctx = document
     .getElementById("comparacionPeriodosChart")
     .getContext("2d");
-    new Chart(ctx, {
+  new Chart(ctx, {
     type: "bar",
     data: {
       labels: labels,
@@ -703,6 +795,8 @@ function setupScrollAnimation() {
     observer.observe(chart);
   });
 }
+
+
 
 // =====================
 // Inicializa los gráficos y la animación al cargar la página
