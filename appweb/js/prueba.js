@@ -1,30 +1,3 @@
-// // =====================
-// // Elimina una fila de una tabla de probabilidades
-// // =====================
-// function eliminarFila(btn) {
-//   const fila = btn.parentNode.parentNode;
-//   fila.remove();
-// }
-
-// // =====================
-// // Agrega una fila editable a una tabla de probabilidades
-// // =====================
-// function agregarFila(tablaId) {
-//   const tabla = document
-//     .getElementById(tablaId)
-//     .getElementsByTagName("tbody")[0];
-//   const fila = tabla.insertRow();
-//   for (let i = 0; i < 4; i++) {
-//     const celda = fila.insertCell();
-//     celda.contentEditable = true;
-//     celda.innerText = "";
-//   }
-//   const celdaBoton = fila.insertCell();
-//   const boton = document.createElement("button");
-//   boton.innerText = "Eliminar";
-//   boton.onclick = () => eliminarFila(boton);
-//   celdaBoton.appendChild(boton);
-// }
 
 // =====================
 // Habilita los botones para ver resultados
@@ -203,11 +176,11 @@ function generarSimulacion() {
     totalPerdidas
   );
 
-  actualizarTablaCostosOperacion(
-    totalCostoRetraso,
-    totalCostoEstadia,
-    totalCostoPerdida
-  );
+  // actualizarTablaCostosOperacion(
+  //   totalCostoRetraso,
+  //   totalCostoEstadia,
+  //   totalCostoPerdida
+  // );
 
   const promedios = {
     promedioRetrasos: (totalRetrasos / dias).toFixed(2),
@@ -287,48 +260,48 @@ function actualizarTotales(
 // =====================
 // ACTUALIZA LOS COSTOS EN LA TABLA DE COSTOS DE OPERACIÓN (fuera y dentro del modal)
 // =====================
-function actualizarTablaCostosOperacion(
-  totalCostoRetraso,
-  totalCostoEstadia,
-  totalCostoPerdida
-) {
-  if (document.getElementById("costoRetraso"))
-    document.getElementById("costoRetraso").textContent =
-      "$" + totalCostoRetraso.toLocaleString();
-  if (document.getElementById("costoEstadia"))
-    document.getElementById("costoEstadia").textContent =
-      "$" + totalCostoEstadia.toLocaleString();
-  if (document.getElementById("costoPerdida"))
-    document.getElementById("costoPerdida").textContent =
-      "$" + totalCostoPerdida.toLocaleString();
-  if (document.getElementById("costoTotalOperacion"))
-    document.getElementById("costoTotalOperacion").textContent =
-      "$" +
-      (
-        totalCostoRetraso +
-        totalCostoEstadia +
-        totalCostoPerdida
-      ).toLocaleString();
+// function actualizarTablaCostosOperacion(
+//   totalCostoRetraso,
+//   totalCostoEstadia,
+//   totalCostoPerdida
+// ) {
+//   if (document.getElementById("costoRetraso"))
+//     document.getElementById("costoRetraso").textContent =
+//       "$" + totalCostoRetraso.toLocaleString();
+//   if (document.getElementById("costoEstadia"))
+//     document.getElementById("costoEstadia").textContent =
+//       "$" + totalCostoEstadia.toLocaleString();
+//   if (document.getElementById("costoPerdida"))
+//     document.getElementById("costoPerdida").textContent =
+//       "$" + totalCostoPerdida.toLocaleString();
+//   if (document.getElementById("costoTotalOperacion"))
+//     document.getElementById("costoTotalOperacion").textContent =
+//       "$" +
+//       (
+//         totalCostoRetraso +
+//         totalCostoEstadia +
+//         totalCostoPerdida
+//       ).toLocaleString();
 
-  // También para el modal (si existe)
-  if (document.getElementById("costoRetrasoModal"))
-    document.getElementById("costoRetrasoModal").textContent =
-      "$" + totalCostoRetraso.toLocaleString();
-  if (document.getElementById("costoEstadiaModal"))
-    document.getElementById("costoEstadiaModal").textContent =
-      "$" + totalCostoEstadia.toLocaleString();
-  if (document.getElementById("costoPerdidaModal"))
-    document.getElementById("costoPerdidaModal").textContent =
-      "$" + totalCostoPerdida.toLocaleString();
-  if (document.getElementById("costoTotalOperacionModal"))
-    document.getElementById("costoTotalOperacionModal").textContent =
-      "$" +
-      (
-        totalCostoRetraso +
-        totalCostoEstadia +
-        totalCostoPerdida
-      ).toLocaleString();
-}
+//   // // También para el modal (si existe)
+//   // if (document.getElementById("costoRetrasoModal"))
+//   //   document.getElementById("costoRetrasoModal").textContent =
+//   //     "$" + totalCostoRetraso.toLocaleString();
+//   // if (document.getElementById("costoEstadiaModal"))
+//   //   document.getElementById("costoEstadiaModal").textContent =
+//   //     "$" + totalCostoEstadia.toLocaleString();
+//   // if (document.getElementById("costoPerdidaModal"))
+//   //   document.getElementById("costoPerdidaModal").textContent =
+//   //     "$" + totalCostoPerdida.toLocaleString();
+//   // if (document.getElementById("costoTotalOperacionModal"))
+//   //   document.getElementById("costoTotalOperacionModal").textContent =
+//   //     "$" +
+//   //     (
+//   //       totalCostoRetraso +
+//   //       totalCostoEstadia +
+//   //       totalCostoPerdida
+//   //     ).toLocaleString();
+// }
 
 // =====================
 // Hace que las celdas editables de la tabla propaguen cambios
@@ -475,6 +448,7 @@ function recalcularYPropagar() {
     totalCostoRetraso = 0,
     totalCostoEstadia = 0,
     totalCostoPerdida = 0;
+    totalPerdidas = 0;
 
   let colaBarcazas = [];
   const resultadosDiarios = [];
@@ -491,6 +465,8 @@ function recalcularYPropagar() {
     // 2. Eliminar barcazas perdidas
     const perdidasHoy = colaBarcazas.filter(d => d > tiempoMaxEspera).length;
     colaBarcazas = colaBarcazas.filter(d => d <= tiempoMaxEspera);
+
+    totalPerdidas += perdidasHoy;
 
     // 3. Retrasos actuales
     const retrasosVisibles = colaBarcazas.length;
@@ -582,14 +558,15 @@ function recalcularYPropagar() {
     totalADescargarSuma,
     totalCostoRetraso,
     totalCostoEstadia,
-    totalCostoPerdida
+    totalCostoPerdida,
+    totalPerdidas
   );
 
-  actualizarTablaCostosOperacion(
-    totalCostoRetraso,
-    totalCostoEstadia,
-    totalCostoPerdida
-  );
+  // actualizarTablaCostosOperacion(
+  //   totalCostoRetraso,
+  //   totalCostoEstadia,
+  //   totalCostoPerdida
+  // );
 
   const promedios = {
     promedioRetrasos: (totalRetrasos / tbody.rows.length).toFixed(2),
@@ -675,46 +652,7 @@ function calcularCostosSimulacion() {
     costoEstadia += totalADescargar * costoPorEstadia;
     costoPerdida += retrasos > 0 ? retrasos * costoPorPerdida : 0;
   }
-
-  // // Actualiza los elementos del modal (incluido el total)
-  // if (document.getElementById("costoRetrasoModal")) {
-  //   document.getElementById("costoRetrasoModal").textContent =
-  //     "$" + costoRetraso.toLocaleString();
-  //   document.getElementById("costoEstadiaModal").textContent =
-  //     "$" + costoEstadia.toLocaleString();
-  //   document.getElementById("costoPerdidaModal").textContent =
-  //     "$" + costoPerdida.toLocaleString();
-  //   if (document.getElementById("costoTotalOperacionModal"))
-  //     document.getElementById("costoTotalOperacionModal").textContent =
-  //       "$" + (costoRetraso + costoEstadia + costoPerdida).toLocaleString();
-  // }
 }
-
-// =====================
-// Evento para mostrar el modal de resultados promedio
-// =====================
-// document.getElementById("btnModalResultados").addEventListener("click", () => {
-//   const promedios = JSON.parse(localStorage.getItem("promediosSimulacion"));
-//   if (promedios) {
-//     document.getElementById("promedioRetrasos").textContent =
-//       promedios.promedioRetrasos;
-//     document.getElementById("promedioLlegadas").textContent =
-//       promedios.promedioLlegadas;
-//     document.getElementById("promedioDescargas").textContent =
-//       promedios.promedioDescargas;
-//     calcularCostosSimulacion();
-//     const modalElement = document.getElementById("staticBackdrop");
-//     const modal = new bootstrap.Modal(modalElement);
-//     modal.show();
-//   } else {
-//     document.getElementById("promedioRetrasos").textContent = "";
-//     document.getElementById("promedioLlegadas").textContent = "";
-//     document.getElementById("promedioDescargas").textContent = "";
-//     alert(
-//       "Por favor, genere primero la simulación para poder ver los resultados."
-//     );
-//   }
-// });
 
 // =====================
 // Evento para ver los resultados en otra página (resultados.html)

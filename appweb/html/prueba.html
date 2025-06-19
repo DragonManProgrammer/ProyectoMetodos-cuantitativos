@@ -89,12 +89,12 @@
                                         <!-- Campo para el valor mínimo -->
                                         <div class="col-md-4">
                                             <label for="rangoMin" class="form-label">Mín:</label>
-                                            <input type="number" class="form-control" id="rangoMin" value="1">
+                                            <input type="number" class="form-control" id="rangoMin" value="1" disabled>
                                         </div>
                                         <!-- Campo para el valor máximo -->
                                         <div class="col-md-4">
                                             <label for="rangoMax" class="form-label">Máx:</label>
-                                            <input type="number" class="form-control" id="rangoMax" value="100">
+                                            <input type="number" class="form-control" id="rangoMax" value="100" disabled>
                                         </div>
                                         <!-- Campo para la cantidad de días a simular -->
                                         <div class="col-md-4">
@@ -212,45 +212,6 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <!-- TABLA DE COSTOS DE OPERACIÓN alineada a la derecha -->
-                            <!-- <div class="row justify-content-center mt-4">
-                                <div class="col-auto">
-                                    <div class="d-flex flex-column align-items-center">
-                                        <h5 class="mb-0 fw-bold">Costos de operación</h5>
-                                        <table class="table table-bordered table-hover mt-0 mb-0 w-auto"
-                                            style="min-width: 300px;">
-                                            <thead class="table-secondary">
-                                                <tr>
-                                                    <th colspan="2" class="text-center">Costos de operación</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>Concepto</th>
-                                                    <th>Costo</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Costo por barcaza retrasada</td>
-                                                    <td id="costoRetraso">$0</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Costo por estadía</td>
-                                                    <td id="costoEstadia">$0</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Costo por barcaza perdida</td>
-                                                    <td id="costoPerdida">$0</td>
-                                                </tr>
-                                                <tr style="font-weight:bold; background:#e3eafc;">
-                                                    <td>Total</td>
-                                                    <td id="costoTotalOperacion" style="font-weight:bold">$0</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div> -->
-                            <!-- FIN TABLA COSTOS -->
                         </div>
                     </div>
                 </section>
@@ -425,63 +386,6 @@
                     </span>
                 </div>
 
-                <!-- Modal de resultados promedio -->
-                <!-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content custom-modal">
-                            <div class="modal-header custom-modal__header">
-                                <h5 class="custom-modal__title titulo2" id="staticBackdropLabel">Resultados promedio
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Cerrar"></button>
-                            </div>
-                            <div class="modal-body custom-modal__body estiloModal">
-                                <p class="markModel">Promedio de barcazas retrasadas por día: <span
-                                        id="promedioRetrasos"></span></p>
-                                <p class="markModel">Promedio de llegadas nocturnas: <span id="promedioLlegadas"></span>
-                                </p>
-                                <p class="markModel">Promedio de barcazas descargadas por día: <span
-                                        id="promedioDescargas"></span></p>
-                                <hr>
-                                <h5>Costos de operación</h5>
-                                <table class="table table-bordered table-hover w-auto mx-auto mb-0">
-                                    <thead class="table-secondary">
-                                        <tr>
-                                            <th colspan="2" class="text-center">Costos de operación</th>
-                                        </tr>
-                                        <tr>
-                                            <th>Concepto</th>
-                                            <th>Costo</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Costo por barcaza retrasada</td>
-                                            <td id="costoRetrasoModal">$0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Costo por estadía</td>
-                                            <td id="costoEstadiaModal">$0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Costo por barcaza perdida</td>
-                                            <td id="costoPerdidaModal">$0</td>
-                                        </tr>
-                                        <tr style="font-weight:bold; background:#e3eafc;">
-                                            <td>Total</td>
-                                            <td id="costoTotalOperacionModal" style="font-weight:bold">$0</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="modal-footer custom-modal__footer">
-                                <button type="button" class="btn bordeB" data-bs-dismiss="modal">Cerrar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- End modal -->
             </div>
         </div>
     </div>
