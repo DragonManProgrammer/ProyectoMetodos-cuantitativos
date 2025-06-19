@@ -110,7 +110,7 @@ button:hover {
 }
 
 .btn-resultados {
-    background: linear-gradient(90deg, #17474f 0%, #0e514a 100%);
+    background: linear-gradient(90deg, #0a2b27 0%, #114747 100%);
     color: white;
     padding: 10px 20px;
     border-radius: 30px;
@@ -119,7 +119,7 @@ button:hover {
 }
 
 .btn-resultados:hover {
-    background: linear-gradient(90deg, #0a2b27 0%, #114747 100%);
+    background: linear-gradient(90deg, #041210 0%, #114747 100%);
     transform: scale(1.03);
     color: white;
 }

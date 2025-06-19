@@ -481,75 +481,75 @@ function inicializarGraficos() {
     `Total de días simulados: ${totalDias}`;
 
   // --- Tiempos promedio en cola y en el sistema 
-  const tiempos = calcularTiemposColaSistema(resultados);
-  const tiemposCola = tiempos.map((t) => t.cola);
-  const tiemposSistema = tiempos.map((t) => t.sistema);
-  const ctxTiempos = document
-    .getElementById("tiemposPromedioChart")
-    .getContext("2d");
-  const maxTiempos = Math.max(...tiemposCola.concat(tiemposSistema), 0);
-  new Chart(ctxTiempos, {
-    type: "line",
-    data: {
-      labels: Array.from({ length: tiemposCola.length }, (_, i) => i + 1),
-      datasets: [
-        {
-          label: "Tiempo en Cola",
-          data: tiemposCola,
-          borderColor: "#ff6384",
-          backgroundColor: "rgba(255,99,132,0.13)",
-          fill: true,
-          tension: 0.2,
-          pointRadius: 3,
-        },
-        {
-          label: "Tiempo en el Sistema",
-          data: tiemposSistema,
-          borderColor: "#2b6cb0",
-          backgroundColor: "rgba(43,108,176,0.10)",
-          fill: true,
-          tension: 0.2,
-          pointRadius: 3,
-        },
-      ],
-    },
-    options: {
-      plugins: {
-        title: {
-          display: true,
-          text: "Tiempos Promedio en Cola y en el Sistema",
-          font: { size: 18 }
-        },
-        legend: { display: true }
-      },
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: "Día",
-            font: { size: 15 }
-          }
-        },
-        y: {
-          beginAtZero: true,
-          max: maxTiempos > 0 ? Math.max(maxTiempos, 5) : undefined,
-          title: {
-            display: true,
-            text: "Tiempo (días)",
-            font: { size: 15 }
-          }
-        }
-      },
-    },
-  });
-  if (!document.getElementById("infoTiemposPromedio")) {
-    const info = document.createElement("div");
-    info.id = "infoTiemposPromedio";
-    info.style = "margin-top:8px;font-size:14px;color:#06444d;text-align:center;";
-    ctxTiempos.canvas.parentNode.appendChild(info);
-  }
-  document.getElementById("infoTiemposPromedio").textContent =
-    `Total de días simulados: ${totalDias}`;
+  // const tiempos = calcularTiemposColaSistema(resultados);
+  // const tiemposCola = tiempos.map((t) => t.cola);
+  // const tiemposSistema = tiempos.map((t) => t.sistema);
+  // const ctxTiempos = document
+  //   .getElementById("tiemposPromedioChart")
+  //   .getContext("2d");
+  // const maxTiempos = Math.max(...tiemposCola.concat(tiemposSistema), 0);
+  // new Chart(ctxTiempos, {
+  //   type: "line",
+  //   data: {
+  //     labels: Array.from({ length: tiemposCola.length }, (_, i) => i + 1),
+  //     datasets: [
+  //       {
+  //         label: "Tiempo en Cola",
+  //         data: tiemposCola,
+  //         borderColor: "#ff6384",
+  //         backgroundColor: "rgba(255,99,132,0.13)",
+  //         fill: true,
+  //         tension: 0.2,
+  //         pointRadius: 3,
+  //       },
+  //       {
+  //         label: "Tiempo total en puerto",
+  //         data: tiemposSistema,
+  //         borderColor: "#2b6cb0",
+  //         backgroundColor: "rgba(43,108,176,0.10)",
+  //         fill: true,
+  //         tension: 0.2,
+  //         pointRadius: 3,
+  //       },
+  //     ],
+  //   },
+  //   options: {
+  //     plugins: {
+  //       title: {
+  //         display: true,
+  //         text: "Tiempos Promedio en Cola y en el Sistema",
+  //         font: { size: 18 }
+  //       },
+  //       legend: { display: true }
+  //     },
+  //     scales: {
+  //       x: {
+  //         title: {
+  //           display: true,
+  //           text: "Día",
+  //           font: { size: 15 }
+  //         }
+  //       },
+  //       y: {
+  //         beginAtZero: true,
+  //         max: maxTiempos > 0 ? Math.max(maxTiempos, 5) : undefined,
+  //         title: {
+  //           display: true,
+  //           text: "Tiempo (días)",
+  //           font: { size: 15 }
+  //         }
+  //       }
+  //     },
+  //   },
+  // });
+  // if (!document.getElementById("infoTiemposPromedio")) {
+  //   const info = document.createElement("div");
+  //   info.id = "infoTiemposPromedio";
+  //   info.style = "margin-top:8px;font-size:14px;color:#06444d;text-align:center;";
+  //   ctxTiempos.canvas.parentNode.appendChild(info);
+  // }
+  // document.getElementById("infoTiemposPromedio").textContent =
+  //   `Total de días simulados: ${totalDias}`;
 
   mostrarGraficoCostosReal();
 }

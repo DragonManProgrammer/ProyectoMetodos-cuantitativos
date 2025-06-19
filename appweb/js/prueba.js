@@ -217,6 +217,7 @@ function generarSimulacion() {
 
   localStorage.setItem("resultadosSimulacion", JSON.stringify(resultadosDiarios));
   localStorage.setItem("promediosSimulacion", JSON.stringify(promedios));
+  localStorage.setItem("barcazasPerdidasSimulacion", totalPerdidas);
 
   calcularPeriodosYGuardar(resultadosDiarios);
   observarCambios();
@@ -599,6 +600,8 @@ function recalcularYPropagar() {
   localStorage.setItem("resultadosSimulacion", JSON.stringify(resultadosDiarios));
   localStorage.setItem("promediosSimulacion", JSON.stringify(promedios));
   calcularPeriodosYGuardar(resultadosDiarios);
+  //localStorage.setItem("barcazasPerdidasSimulacion", totalPerdidas);
+
 
   window.dispatchEvent(new StorageEvent("storage", { key: "resultadosSimulacion" }));
   window.dispatchEvent(new StorageEvent("storage", { key: "promediosSimulacion" }));
@@ -621,16 +624,20 @@ function calcularPeriodosYGuardar(resultadosDiarios, costoPorRetraso = 100) {
     let llegadas = 0,
       descargas = 0,
       retrasos = 0;
+      costo = 0;
     periodo.forEach((dia) => {
       llegadas += dia.llegadasNocturnas;
       descargas += dia.descargas;
       retrasos += dia.retrasosDiaAnterior;
+
+      costo += dia.costoRetraso + dia.costoEstadia + dia.costoPerdida;
+
     });
     return {
       llegadas,
       descargas,
       retrasos,
-      costo: retrasos * costoPorRetraso,
+      costo,
     };
   }
 

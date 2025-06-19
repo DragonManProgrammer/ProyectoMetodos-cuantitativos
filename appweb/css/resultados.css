@@ -167,6 +167,27 @@ canvas {
   vertical-align: middle;
 }
 
+/* boton para desplazarse a ver graficos */
+.btn-ver-graficos {
+  background: linear-gradient(90deg, #4fc8d1 20%, #2b6cb0 100%);
+  color: #000000;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.08rem;
+  font-weight: bold;
+  padding: 0.7rem 2rem;
+  box-shadow: 0 4px 16px rgba(79,209,197,0.2);
+  display: inline-block;
+  transition: background 0.3s, box-shadow 0.3s;
+  text-decoration: none; /* Asegura que no tenga subrayado */
+}
+.btn-ver-graficos:hover,
+.btn-ver-graficos:focus {
+  background: linear-gradient(90deg, #4fd1c5 0%, #3682d6 100%);
+  box-shadow: 0 6px 20px rgba(54,130,214,0.4);
+  text-decoration: none;
+}
+
 /* Portada inicial centrada verticalmente */
 .intro {
   display: flex;
@@ -257,13 +278,13 @@ html {
 
 /* Tarjeta de promedios con borde amarillo */
 .card-promedio {
-  border: 1.5px solid #ffe066;
+  border: 1.5px solid #4fd1c5;
 }
 
 /* Título de sección para tarjeta de promedios */
-.card-promedio .titulo-seccion {
+/* .card-promedio .titulo-seccion {
   color: #ffe066;
-}
+} */
 
 /* Título de gráficos dentro de las tarjetas de gráficos */
 .chart-container h2 {

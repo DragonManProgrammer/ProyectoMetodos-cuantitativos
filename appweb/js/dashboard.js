@@ -18,37 +18,38 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Muestra los valores clave en las tarjetas principales del dashboard
+// Muestra los valores clave en las tarjetas principales del dashboard
 function mostrarResumen() {
   const { promedios, resultados, nombreEmpresa } = getSimData();
-  // Muestra el nombre de la empresa si existe
-  document.getElementById("empresaNombre").textContent = nombreEmpresa ? `Empresa: ${nombreEmpresa}` : "";
+
+  document.getElementById("empresaNombre").textContent = nombreEmpresa
+    ? `Empresa: ${nombreEmpresa}`
+    : "";
+
   document.getElementById("promedioRetrasos").textContent = promedios.promedioRetrasos || "-";
   document.getElementById("promedioLlegadas").textContent = promedios.promedioLlegadas || "-";
   document.getElementById("promedioDescargas").textContent = promedios.promedioDescargas || "-";
-  // Calcula el costo total y barcazas perdidas
-  let costoGlobal = "-";
-  let totalPerdidas = "-";
+
+  //Leer pérdidas desde localStorage si están disponibles
+  const totalPerdidas = localStorage.getItem("barcazasPerdidasSimulacion");
+
   if (resultados.length > 0) {
-    const costoPorRetraso = 800, costoOperacion = 500, costoFijoDiario = 25000, costoPorPerdida = 5000;
-    const totalRetrasos = resultados.reduce((acc, d) => acc + (d.retrasosDiaAnterior || 0), 0);
-    const totalDescargas = resultados.reduce((acc, d) => acc + (d.descargas || 0), 0);
-    const diasSimulados = resultados.length;
-    // Calcula barcazas perdidas
-    let cola = [], barcazasPerdidas = 0;
-    resultados.forEach(dia => {
-      for (let i = 0; i < dia.llegadasNocturnas; i++) cola.push(0);
-      cola = cola.map(e => e + 1);
-      cola = cola.slice(dia.descargas);
-      const antes = cola.length;
-      cola = cola.filter(e => e <= 3);
-      barcazasPerdidas += (antes - cola.length);
-    });
-    totalPerdidas = barcazasPerdidas;
-    costoGlobal = (totalRetrasos * costoPorRetraso) + (totalDescargas * costoOperacion) + (diasSimulados * costoFijoDiario) + (barcazasPerdidas * costoPorPerdida);
+    const totalCosto = resultados.reduce((acc, d) =>
+      acc +
+      (d.costoRetraso || 0) +
+      (d.costoEstadia || 0) +
+      (d.costoPerdida || 0),
+      0
+    );
+
+    document.getElementById("costoGlobal").textContent = totalCosto.toLocaleString("en-US");
+    document.getElementById("totalPerdidas").textContent = totalPerdidas ?? "-";
+  } else {
+    document.getElementById("costoGlobal").textContent = "-";
+    document.getElementById("totalPerdidas").textContent = "-";
   }
-  document.getElementById("costoGlobal").textContent = costoGlobal;
-  document.getElementById("totalPerdidas").textContent = totalPerdidas;
 }
+
 
 // Muestra los riesgos detectados en la simulación
 function mostrarRiesgos() {

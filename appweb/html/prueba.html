@@ -79,36 +79,35 @@
                 <section class="mb-4">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h2 class="tituloBase titulo h4 mb-3">Rango para números aleatorios</h2>
+                            <h2 class="tituloBase titulo h4 mb-3">Configuración de la simulación</h2>
 
                             <form class="row g-3 align-items-end">
 
                                 <div class="col-12 mt-4">
-                                    <div class="row">
+                                    <div class="row ">
 
                                         <!-- Campo para el valor mínimo -->
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label for="rangoMin" class="form-label">Mín:</label>
                                             <input type="number" class="form-control" id="rangoMin" value="1">
                                         </div>
                                         <!-- Campo para el valor máximo -->
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label for="rangoMax" class="form-label">Máx:</label>
                                             <input type="number" class="form-control" id="rangoMax" value="100">
                                         </div>
                                         <!-- Campo para la cantidad de días a simular -->
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label for="dias" class="form-label">Cantidad de días:</label>
                                             <input type="number" class="form-control" id="dias" value="15">
                                         </div>
 
 
-                                        <!-- Botón para generar la simulación -->
-                                        <div class="col-12 col-md-3 d-grid">
-                                            <button type="button" class="btn-generar btn-primary" id="btnGenerar">
+                                        <!-- <div class="col-md-3 align-self-end">
+                                            <button type="button" class="btn-generar btn-primary w-100" id="btnGenerar">
                                                 Generar simulación
                                             </button>
-                                        </div>
+                                        </div> -->
 
                                     </div>
                                 </div>
@@ -146,24 +145,25 @@
                                                 Generar simulación
                                             </button>
                                         </div> -->
+
+                                        <!-- Botón para generar la simulación -->
+                                        <!-- <div class="col-12 col-md- d-grid">
+                                            <button type="button" class="btn-generar" id="btnGenerar">
+                                                Generar simulación
+                                            </button>
+                                        </div> -->
                                     </div>
                                 </div>
 
-
-
-
                                 <!-- Botón para generar la simulación -->
-                                <!-- <div class="col-12 d-flex justify-content-center">
+                                <div class="col-12 d-flex justify-content-center">
                                     <div class="d-grid" style="min-width: 400px;">
                                         <button type="button" class="btn-generar btn-primary w-100" id="btnGenerar">
                                             Generar simulación
                                         </button>
                                     </div>
-                                </div> -->
-
+                                </div>
                             </form>
-
-
                         </div>
                     </div>
                 </section>
@@ -281,7 +281,7 @@
                                                 <!-- <th>Acción</th> -->
                                             </tr>
                                         </thead>
-                                        <tbody contenteditable="true">
+                                        <tbody contenteditable="false">
                                             <tr>
                                                 <td>0</td>
                                                 <td>0.13</td>
@@ -357,7 +357,7 @@
                                                 <!-- <th>Acción</th> -->
                                             </tr>
                                         </thead>
-                                        <tbody contenteditable="true">
+                                        <tbody contenteditable="false">
                                             <tr>
                                                 <td>1</td>
                                                 <td>0.05</td>
@@ -412,11 +412,6 @@
 
                 <!-- Botones de resultados -->
                 <div class="d-flex justify-content-center gap-2 my-4">
-                    <!-- <button type="button" class="btn"
-                        style="background-color:#06444d; color:white; border:none; border-radius: 25px; padding: 6px 12px; cursor: pointer;"
-                        id="btnModalResultados">
-                        Resultados Promedio
-                    </button> -->
                     <button id="btnVerResultados" class="btn btn-resultados">
                         Ver Resultados
                     </button>
