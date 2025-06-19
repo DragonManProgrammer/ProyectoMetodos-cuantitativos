@@ -258,52 +258,6 @@ function actualizarTotales(
 }
 
 // =====================
-// ACTUALIZA LOS COSTOS EN LA TABLA DE COSTOS DE OPERACIÓN (fuera y dentro del modal)
-// =====================
-// function actualizarTablaCostosOperacion(
-//   totalCostoRetraso,
-//   totalCostoEstadia,
-//   totalCostoPerdida
-// ) {
-//   if (document.getElementById("costoRetraso"))
-//     document.getElementById("costoRetraso").textContent =
-//       "$" + totalCostoRetraso.toLocaleString();
-//   if (document.getElementById("costoEstadia"))
-//     document.getElementById("costoEstadia").textContent =
-//       "$" + totalCostoEstadia.toLocaleString();
-//   if (document.getElementById("costoPerdida"))
-//     document.getElementById("costoPerdida").textContent =
-//       "$" + totalCostoPerdida.toLocaleString();
-//   if (document.getElementById("costoTotalOperacion"))
-//     document.getElementById("costoTotalOperacion").textContent =
-//       "$" +
-//       (
-//         totalCostoRetraso +
-//         totalCostoEstadia +
-//         totalCostoPerdida
-//       ).toLocaleString();
-
-//   // // También para el modal (si existe)
-//   // if (document.getElementById("costoRetrasoModal"))
-//   //   document.getElementById("costoRetrasoModal").textContent =
-//   //     "$" + totalCostoRetraso.toLocaleString();
-//   // if (document.getElementById("costoEstadiaModal"))
-//   //   document.getElementById("costoEstadiaModal").textContent =
-//   //     "$" + totalCostoEstadia.toLocaleString();
-//   // if (document.getElementById("costoPerdidaModal"))
-//   //   document.getElementById("costoPerdidaModal").textContent =
-//   //     "$" + totalCostoPerdida.toLocaleString();
-//   // if (document.getElementById("costoTotalOperacionModal"))
-//   //   document.getElementById("costoTotalOperacionModal").textContent =
-//   //     "$" +
-//   //     (
-//   //       totalCostoRetraso +
-//   //       totalCostoEstadia +
-//   //       totalCostoPerdida
-//   //     ).toLocaleString();
-// }
-
-// =====================
 // Hace que las celdas editables de la tabla propaguen cambios
 // =====================
 function observarCambios() {
