@@ -530,6 +530,8 @@ function recalcularYPropagar() {
 
   localStorage.setItem("resultadosSimulacion", JSON.stringify(resultadosDiarios));
   localStorage.setItem("promediosSimulacion", JSON.stringify(promedios));
+  localStorage.setItem("barcazasPerdidasSimulacion", totalPerdidas);
+
   calcularPeriodosYGuardar(resultadosDiarios);
   //localStorage.setItem("barcazasPerdidasSimulacion", totalPerdidas);
 
