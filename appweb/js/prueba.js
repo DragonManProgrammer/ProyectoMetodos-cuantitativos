@@ -1,4 +1,3 @@
-
 // =====================
 // Habilita los botones para ver resultados
 // =====================
@@ -148,7 +147,7 @@ function generarSimulacion() {
     `;
     tbody.appendChild(fila);
 
-    // 11. Guardar resultados
+    // 11. Guardar resultados (AQUÍ AGREGA evento y afectacion)
     resultadosDiarios.push({
       dia: i,
       retrasosDiaAnterior: retrasosVisibles,
@@ -159,7 +158,9 @@ function generarSimulacion() {
       descargas: descargas,
       costoRetraso: costoRetrasoDia,
       costoEstadia: costoEstadiaDia,
-      costoPerdida: costoPerdidaDia
+      costoPerdida: costoPerdidaDia,
+      evento: "Ninguno", // Valor inicial, se actualizará al editar
+      afectacion: 0      // Valor inicial, se actualizará al editar
     });
   }
 
@@ -431,6 +432,15 @@ function recalcularYPropagar() {
 
     // 5. Afectación por evento
     const tipoEvento = row.querySelector(".evento-select")?.value || "ninguno";
+    const inputOtro = row.querySelector("input[type='text']");
+    let evento = "";
+    if (tipoEvento === "otro" && inputOtro && inputOtro.value.trim()) {
+      evento = inputOtro.value.trim();
+    } else if (tipoEvento === "ninguno") {
+      evento = "";
+    } else {
+      evento = tipoEvento.charAt(0).toUpperCase() + tipoEvento.slice(1);
+    }
     const afectacionRaw = row.querySelector(".afectacion-celda")?.textContent || "0";
     const afectacion = parseFloat(afectacionRaw.replace("%", "").trim()) || 0;
 
@@ -488,7 +498,7 @@ function recalcularYPropagar() {
     totalCostoEstadia += costoEstadiaDia;
     totalCostoPerdida += costoPerdidaDia;
 
-    // 12. Guardar resultados
+    // 12. Guardar resultados (AQUÍ AGREGA evento y afectacion)
     resultadosDiarios.push({
       dia: i + 1,
       retrasosDiaAnterior: retrasosVisibles,
@@ -500,6 +510,8 @@ function recalcularYPropagar() {
       costoRetraso: costoRetrasoDia,
       costoEstadia: costoEstadiaDia,
       costoPerdida: costoPerdidaDia,
+      evento: evento,
+      afectacion: afectacion
     });
   }
 
@@ -643,3 +655,18 @@ document.getElementById("btnGenerar").addEventListener("click", () => {
   const mensajeAdvertencia = document.getElementById("mensajeAdvertencia");
   mensajeAdvertencia.style.display = "none";
 });
+
+function obtenerEventoDeFila(fila) {
+  const select = fila.querySelector("select");
+  const inputOtro = fila.querySelector("input[type='text']");
+  const valor = select.value;
+
+  if (valor === "otro" && inputOtro && inputOtro.value.trim()) {
+    return inputOtro.value.trim();
+  } else if (valor === "ninguno") {
+    return "";
+  } else {
+    // Capitaliza la primera letra
+    return valor.charAt(0).toUpperCase() + valor.slice(1);
+  }
+}

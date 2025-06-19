@@ -11,7 +11,6 @@ body {
 
 /* --- Sidebar principal con menú de navegación y acciones --- */
 .sidebar {
-  /* Menú lateral fijo y estilizado */
   position: sticky;
   top: 0;
   height: 100vh;
@@ -23,8 +22,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-right: 0;
-  margin-left: 0;
   border-radius: 24px;
   box-shadow: 2px 0 16px 0 rgba(34,46,58,0.10);
   padding: 1.2rem 0 1.2rem 1rem;
@@ -126,7 +123,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center !important;
   gap: 0.7rem;
   text-shadow: none;
   font-family: 'Segoe UI Semibold', Arial, sans-serif;
@@ -197,17 +193,19 @@ body {
   letter-spacing: 0.5px;
 }
 .decision-text {
-  font-size: 1.18rem;
+  font-size: 1.08rem;
   color: #1a2636;
   font-weight: 600;
   margin-top: 0.7rem;
-  margin-bottom: 0.7rem;
+  margin-bottom: 1.1em;
   padding: 0.7rem 1.1rem;
   border-left: 4px solid #36a2eb;
   background: #f0f8ff;
   border-radius: 6px;
   box-shadow: 0 1px 4px #36a2eb22;
   transition: background 0.2s;
+  text-align: justify;
+  text-justify: inter-word;
 }
 .card-decision h2 {
   color: #36a2eb;
@@ -259,17 +257,18 @@ body {
   color: #232b36;
 }
 .extra-block h2 {
-  font-size: 1.15rem;
+  text-align: center;
+  font-size: 1.13rem;
+  font-weight: 700;
+  margin-bottom: 1.1rem;
   color: #4fd1c5;
-  margin-bottom: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.5em;
 }
 .resumen-ejecutivo {
-  font-size: 1.13rem;
+  font-size: 1.08rem;
   color: #1a2636;
   background: #f7fafc;
   border-radius: 8px;
@@ -279,9 +278,11 @@ body {
   box-shadow: 0 1px 4px #4fd1c522;
   font-weight: 500;
   line-height: 1.7;
+  text-align: center;
 }
 .sugerencias-list {
-  margin: 0; padding-left: 1.2rem;
+  margin: 0;
+  padding-left: 1.2rem;
   color: #1a2636;
   font-size: 1.08rem;
   list-style: disc inside;
@@ -291,10 +292,16 @@ body {
   border-left: 4px solid #a3e635;
   box-shadow: 0 1px 4px #a3e63522;
   font-weight: 500;
+  margin-bottom: 1.1em;
+  margin-top: 0.7em;
+  text-align: justify;
+  text-justify: inter-word;
 }
 .sugerencias-list li {
   margin-bottom: 0.5rem;
   padding-left: 0.2rem;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 /* --- Otros estilos útiles para mensajes y responsive --- */
@@ -386,8 +393,10 @@ body.darkmode .sugerencias-list {
   border-left: 4px solid #a3e635;
   box-shadow: 0 1px 4px #a3e63544;
 }
-body.darkmode .sugerencias-list li {
-  color: #d4ffb2;
+body.darkmode .sugerencias-list li,
+body.darkmode .sugerencia-profesional {
+  color: #d4ffb2 !important;
+  background: none !important;
 }
 body.darkmode .dashboard-header h1,
 body.darkmode .dashboard-title {
@@ -420,78 +429,297 @@ body.darkmode .summary-cards .card {
   color: #e0f7fa !important;
 }
 
-/* Estilos de PDF --- */
-.pdf-kpi-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5em;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-}
-.pdf-kpi-card {
-  background: #f7fafc;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px #0001;
-  padding: 1.1em 2em 1em 1.2em;
-  min-width: 160px;
-  max-width: 220px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 0.5em;
-}
-.pdf-kpi-icon {
-  font-size: 2.1em;
-  margin-bottom: 0.2em;
-}
-.pdf-kpi-label {
-  color: #888;
-  font-size: 1.01em;
-  margin-bottom: 0.2em;
-}
-.pdf-kpi-value {
+/* Sugerencias y recomendaciones formato profesional */
+.sugerencias-list,
+.sugerencia-profesional {
+  font-size: 1.13rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
   color: #1a2636;
-  font-size: 1.35em;
-  font-weight: 700;
-}
-.pdf-chart-title {
-  color: #4fd1c5;
-  font-size: 1.08rem;
-  margin: 1.2rem 0 0.5rem 0;
-  font-weight: 600;
-}
-.pdf-chart-img {
-  max-width: 100%;
-  margin-bottom: 1.2rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px #4fd1c522;
-}
-.pdf-riesgos-list {
-  color: #d9534f;
-  font-size: 1.05em;
-  margin: 0.5em 0 0.5em 1.2em;
-}
-.pdf-sugerencias-list {
-  color: #1a2636;
-  font-size: 1.05em;
-  margin: 0.5em 0 0.5em 1.2em;
-}
-.pdf-resumen-ejecutivo {
   background: #f7fafc;
   border-radius: 8px;
-  padding: 1rem 1.3rem;
-  border-left: 4px solid #4fd1c5;
-  box-shadow: 0 1px 4px #4fd1c522;
+  padding: 0.6em 1.1em;
+  margin-bottom: 0.5em;
+  border-left: 4px solid #a3e635;
+  box-shadow: 0 1px 4px #a3e63522;
   font-weight: 500;
   line-height: 1.7;
-  color: #1a2636;
 }
-.pdf-section .decision-text {
-  background: #f0f8ff;
-  border-left: 4px solid #36a2eb;
-  border-radius: 6px;
-  box-shadow: 0 1px 4px #36a2eb22;
-  padding: 0.7rem 1.1rem;
+.sugerencias-list li,
+.sugerencia-profesional {
+  margin-bottom: 0.5rem;
+  padding-left: 0.2rem;
+  background: none;
+  border: none;
+  list-style: none;
+}
+.sugerencias-list li b,
+.sugerencia-profesional b {
+  color: #3682d6;
+}
+.sugerencias-list li i,
+.sugerencia-profesional i {
+  color: #36a2eb;
+  margin-right: 0.3em;
+}
+.sugerencias-list li span,
+.sugerencia-profesional span {
+  font-weight: 600;
+}
+
+/* --- Ajuste de iconos grandes y armoniosos para KPIs --- */
+.card h2 i,
+.card .kpi-icon {
+  font-size: 2.2em !important;
+  margin-bottom: 0.2em;
+  display: block;
+}
+.card .kpi-icon {
+  text-align: center;
+}
+
+/* --- Títulos principales de secciones (Riesgos, Recomendación, Resumen, Sugerencias) --- */
+.card-risk h2,
+.card-decision h2,
+.extra-block h2 {
+  text-align: center;
+  font-size: 1.13rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.1rem;
+  margin-top: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+.card-risk h2 { color: #d9534f; }
+.card-decision h2 { color: #36a2eb; }
+.extra-block h2 { color: #4fd1c5; }
+@media (max-width: 700px) {
+  .card-risk h2,
+  .card-decision h2,
+  .extra-block h2 {
+    font-size: 1.05rem;
+  }
+}
+
+/* --- Riesgos Detectados: grid de tarjetas vistosas (más compactas) --- */
+.riesgos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.7em;
+  margin: 0;
+  padding: 0.1em 0.1em 0.1em 0.1em;
+}
+.riesgo-card {
+  background: linear-gradient(100deg, #fffbe6 70%, #fff 100%);
+  border-radius: 11px;
+  box-shadow: 0 1px 4px #fbbf2444;
+  border-left: 4px solid #d9534f;
+  padding: 0.7em 1em 0.7em 1em;
+  color: #b91c1c;
+  min-height: 60px;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7em;
+  font-size: 1.08rem;
+  position: relative;
+  transition: box-shadow 0.18s, transform 0.18s;
+  margin-bottom: 0;
+}
+.riesgo-card .riesgo-icon {
+  font-size: 1.5em;
+  margin-right: 0.2em;
+  flex-shrink: 0;
+  margin-top: 0.1em;
+  filter: drop-shadow(0 2px 6px #fbbf2444);
+}
+.riesgo-card .riesgo-titulo {
+  font-size: 1.08em;
+  font-weight: 700;
+  color: #232b36;
+  margin-bottom: 0.1em;
+  display: block;
+}
+.riesgo-card .riesgo-desc {
+  font-size: 0.98em;
+  color: #b91c1c;
+  margin-bottom: 0.1em;
+  line-height: 1.5;
+}
+.riesgo-card .riesgo-extra {
+  font-size: 0.95em;
+  color: #888;
+  margin-top: 0.1em;
+}
+@media (max-width: 700px) {
+  .riesgos-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5em;
+  }
+  .riesgo-card {
+    font-size: 1em;
+    padding: 0.6em 0.5em;
+  }
+}
+
+/* --- PDF mejoras visuales --- */
+.pdf-section .decision-text,
+.pdf-section .pdf-sugerencias-list,
+.pdf-section .pdf-resumen-ejecutivo {
+  text-align: justify;
+  text-justify: inter-word;
+}
+.pdf-section .pdf-resumen-ejecutivo {
+  background: #e0f7fa;
+  border-radius: 10px;
+  border-left: 4px solid #4fd1c5;
+  box-shadow: 0 1px 4px #4fd1c522;
+  padding: 1.2em 2em;
+  margin: 0.7em auto;
+  font-size: 1.13em;
+  color: #1a2636;
+  max-width: 650px;
+}
+.pdf-section .pdf-sugerencias-list {
+  background: #f7fafc;
+  border-radius: 10px;
+  border-left: 4px solid #a3e635;
+  box-shadow: 0 1px 4px #a3e63522;
+  padding: 1.1em 1.5em;
+  margin-bottom: 0.7em;
+}
+.pdf-section .pdf-sugerencias-list li {
+  text-align: justify;
+  text-justify: inter-word;
+  margin-bottom: 0.6em;
+  font-size: 1.08em;
+  color: #1a2636;
+  border-bottom: 1px dashed #a3e63544;
+  padding-bottom: 0.3em;
+}
+.pdf-section .pdf-sugerencias-list li:last-child {
+  border-bottom: none;
+}
+.pdf-section .pdf-riesgos-list {
+  background: #fffbe6;
+  border-radius: 10px;
+  border-left: 5px solid #d9534f;
+  box-shadow: 0 2px 8px #fbbf2444;
+  padding: 1.1em 1.5em;
+  margin-bottom: 0.7em;
+  font-size: 1.13em;
+  color: #b91c1c;
+  list-style: none;
+}
+.pdf-section .pdf-riesgos-list li {
+  margin-bottom: 0.7em;
+  padding-left: 0.2em;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7em;
+  font-size: 1.13em;
+  line-height: 1.6;
+  border-bottom: 1px dashed #fbbf24;
+}
+.pdf-section .pdf-riesgos-list li:last-child {
+  border-bottom: none;
+}
+.pdf-section .pdf-riesgos-list li b {
+  color: #232b36;
 }
 
 /* --- Fin de estilos --- */
+/* --- Fin de estilos --- */
+.sugerencias-list li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.2rem;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* --- PDF mejoras visuales --- */
+.pdf-section .decision-text,
+.pdf-section .pdf-sugerencias-list,
+.pdf-section .pdf-resumen-ejecutivo {
+  text-align: justify;
+  text-justify: inter-word;
+}
+.pdf-section .pdf-resumen-ejecutivo {
+  background: #e0f7fa;
+  border-radius: 10px;
+  border-left: 4px solid #4fd1c5;
+  box-shadow: 0 1px 4px #4fd1c522;
+  padding: 1.2em 2em;
+  margin: 0.7em auto;
+  font-size: 1.13em;
+  color: #1a2636;
+  max-width: 650px;
+}
+.pdf-section .pdf-sugerencias-list {
+  background: #f7fafc;
+  border-radius: 10px;
+  border-left: 4px solid #a3e635;
+  box-shadow: 0 1px 4px #a3e63522;
+  padding: 1.1em 1.5em;
+  margin-bottom: 0.7em;
+}
+.pdf-section .pdf-sugerencias-list li {
+  text-align: justify;
+  text-justify: inter-word;
+  margin-bottom: 0.6em;
+  font-size: 1.08em;
+  color: #1a2636;
+  border-bottom: 1px dashed #a3e63544;
+  padding-bottom: 0.3em;
+}
+.pdf-section .pdf-sugerencias-list li:last-child {
+  border-bottom: none;
+}
+.pdf-section .pdf-riesgos-list {
+  background: #fffbe6;
+  border-radius: 10px;
+  border-left: 5px solid #d9534f;
+  box-shadow: 0 2px 8px #fbbf2444;
+  padding: 1.1em 1.5em;
+  margin-bottom: 0.7em;
+  font-size: 1.13em;
+  color: #b91c1c;
+  list-style: none;
+}
+.pdf-section .pdf-riesgos-list li {
+  margin-bottom: 0.7em;
+  padding-left: 0.2em;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7em;
+  font-size: 1.13em;
+  line-height: 1.6;
+  border-bottom: 1px dashed #fbbf24;
+}
+.pdf-section .pdf-riesgos-list li:last-child {
+  border-bottom: none;
+}
+.pdf-section .pdf-riesgos-list li b {
+  color: #232b36;
+}
+
+/* --- Fin de estilos --- */
+/* --- Fin de estilos --- */
+.resumen-media {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.7em;
+}
+.resumen-img {
+  max-width: 180px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px #4fd1c522;
+  margin-bottom: 0.5em;
+}
+@media (max-width: 700px) {
+  .resumen-img {
+    max-width: 120px;
+  }
+}
