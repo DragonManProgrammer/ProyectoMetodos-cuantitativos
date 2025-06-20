@@ -670,3 +670,14 @@ function obtenerEventoDeFila(fila) {
     return valor.charAt(0).toUpperCase() + valor.slice(1);
   }
 }
+
+
+//Nombre del usuario 
+document.addEventListener("DOMContentLoaded", () => {
+  const nombre = localStorage.getItem("nombreUsuario");
+  const span = document.querySelector(".nombre");
+
+  if (span && nombre) {
+    span.textContent = nombre;
+  }
+});

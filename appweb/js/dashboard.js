@@ -884,3 +884,15 @@ window.onload = function() {
   mostrarGraficos();
   mostrarDecisionYResumen();
 };
+
+
+
+//Obtiene el nombre de la empresa mediante local storage
+document.addEventListener("DOMContentLoaded", () => {
+  const nombre = localStorage.getItem("nombreUsuario");
+  const span = document.querySelector(".nombre");
+
+  if (span && nombre) {
+    span.textContent = nombre;
+  }
+});

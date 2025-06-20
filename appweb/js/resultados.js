@@ -812,3 +812,14 @@ window.addEventListener("storage", function (e) {
     mostrarComparacionPeriodos();
   }
 });
+
+
+//Nombre usuario 
+document.addEventListener("DOMContentLoaded", () => {
+  const nombre = localStorage.getItem("nombreUsuario");
+  const span = document.querySelector(".nombre");
+
+  if (span && nombre) {
+    span.textContent = nombre;
+  }
+});

@@ -67,13 +67,31 @@
     </style>
 </head>
 
-<body class="fondo">
-    <div class="container-fluid py-4">
+<body class="fondo d-flex flex-column min-vh-100">
+
+<!-- NAVBAR TRANSLÚCIDA -->
+<nav class="navbar-blur">
+  <div class="container d-flex justify-content-between align-items-center">
+    <!-- Logo a la izquierda -->
+    <div>
+      <img src="../img/logoPuerto.png" alt="Logo" class="logo-navbar" />
+    </div>
+    <!-- Saludo elegante -->
+    <div class="saludo-elegante">
+      ¡Bienvenido, <span class="nombre"></span>!
+    </div>
+  </div>
+</nav>
+
+<!-- Espaciador para que el contenido no quede detrás del navbar -->
+<div style="height: 75px;"></div>
+
+
         <div class="row">
             <div class="col-12">
                 <!-- Título de la página -->
                 <div class="text-center mb-4">
-                    <h1 class="tituloBase tituloGeneral">Simulación de llegadas y descargas de Barcazas</h1>
+                    <h1 class="tituloBase tituloGeneral">Simulación de llegadas y descargas de Barcazas </h1>
                 </div>
                 <!-- SECCIÓN DE PARÁMETROS INICIALES -->
                 <section class="mb-4">
@@ -389,6 +407,10 @@
             </div>
         </div>
     </div>
+<footer class="footer-blur text-center">
+  © 2025 <strong>Nautica Barcazas</strong>. Todos los derechos reservados
+</footer>
+
     <!-- Scripts -->
     <script src="../js/prueba.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

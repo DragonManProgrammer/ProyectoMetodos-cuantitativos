@@ -1,3 +1,6 @@
+
+
+
 /* Fondo principal con imagen y fuente base para la simulación */
 .fondo {
     font-family: Arial, sans-serif;
@@ -384,4 +387,57 @@ td[contenteditable="true"]:focus {
     font-size: 1.2em;
     vertical-align: middle;
     color: #ffe066;
+}
+
+
+
+
+
+
+
+
+
+
+.navbar-blur {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 0.8rem 1.5rem;
+  background: rgba(0, 0, 0, 0.2); /* fondo transparente oscuro */
+  backdrop-filter: blur(8px); /* desenfoque elegante */
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+}
+
+.logo-navbar {
+  height: 44px;
+  width: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+.saludo-elegante {
+  font-family: 'Segoe UI', 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.footer-blur {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #ddd;
+  font-size: 0.9rem;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 999;
 }
