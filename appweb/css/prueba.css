@@ -1,7 +1,7 @@
 /* Fondo principal con imagen y fuente base para la simulación */
 .fondo {
     font-family: Arial, sans-serif;
-    background-image: url(../img/fondoBarco2.jpg);
+    background-image: url(../img/fondo2.jpg);
     margin: 50px;
     height: auto;
     width: auto;
@@ -110,19 +110,22 @@ button:hover {
 }
 
 .btn-resultados {
-    background: linear-gradient(90deg, #0a2b27 0%, #114747 100%);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-
+  background-color: #18705c;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 40px;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
-
 .btn-resultados:hover {
-    background: linear-gradient(90deg, #041210 0%, #114747 100%);
-    transform: scale(1.03);
-    color: white;
+  background-color: #145b4b;
+  transform: scale(1.05);
+  color: white;
 }
+
 
 /* Celdas editables resaltadas al enfocar */
 td[contenteditable="true"]:focus {
@@ -169,7 +172,7 @@ td[contenteditable="true"]:focus {
 .tituloGeneral {
     /* text-align: center; */
     color: #f0f0f0;
-    background: linear-gradient(90deg, #113c42, #051e32);
+    background: linear-gradient(90deg, #051e32, #051e32);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     font-family: 'Times New Roman', Times, serif;
     border-radius: 0.5rem;
