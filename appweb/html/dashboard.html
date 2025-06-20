@@ -120,60 +120,94 @@
           <div class="row g-4 mb-4">
             <div class="col-12 col-md-6">
               <div class="chart-container chart-ocean h-100 mb-4">
-                <div class="fw-bold mb-2 text-info"><i class="fas fa-chart-bar"></i> Promedios Diarios</div>
+                <div class="fw-bold mb-2 text-info chart-title text-center" style="font-size:1.13em;">
+                  <i class="fas fa-chart-bar"></i> Promedios Diarios
+                </div>
                 <canvas id="barChart"></canvas>
               </div>
             </div>
             <div class="col-12 col-md-6">
               <div class="chart-container chart-sand h-100 mb-4">
-                <div class="fw-bold mb-2 text-warning"><i class="fas fa-chart-pie"></i> Llegadas Nocturnas</div>
+                <div class="fw-bold mb-2 text-warning chart-title text-center" style="font-size:1.13em;">
+                  <i class="fas fa-chart-pie"></i> Llegadas Nocturnas
+                </div>
                 <canvas id="pieChart"></canvas>
               </div>
             </div>
             <div class="col-12 col-md-6">
               <div class="chart-container chart-sky h-100">
-                <div class="fw-bold mb-2 text-primary"><i class="fas fa-chart-line"></i> Retrasos Diarios</div>
+                <div class="fw-bold mb-2 text-primary chart-title text-center" style="font-size:1.13em;">
+                  <i class="fas fa-chart-line"></i> Retrasos Diarios
+                </div>
                 <canvas id="retrasosChart"></canvas>
               </div>
             </div>
             <div class="col-12 col-md-6">
               <div class="chart-container chart-util h-100">
-                <div class="fw-bold mb-2 text-success"><i class="fas fa-percent"></i> Utilización Servidor</div>
+                <div class="fw-bold mb-2 text-success chart-title text-center" style="font-size:1.13em;">
+                  <i class="fas fa-percent"></i> Utilización Servidor
+                </div>
                 <canvas id="utilizacionChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gráficos adicionales agregados al dashboard -->
+          <div class="row g-4 mb-4">
+            <div class="col-12 col-md-6">
+              <div class="chart-container chart-ocean h-100 mb-4">
+                <div class="fw-bold mb-2 text-info chart-title text-center" style="font-size:1.13em;">
+                  <i class="fas fa-box-open"></i> Distribución de descargas
+                </div>
+                <canvas id="descargasDiariasChart" style="height:340px;max-height:340px;"></canvas>
+                <div style="font-size: 0.97em; color: #3682d6; margin-top: 0.5em;">
+                  Muestra la cantidad de barcazas descargadas cada día de la simulación.
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="chart-container chart-sand h-100 mb-4">
+                <div class="fw-bold mb-2 text-warning chart-title text-center" style="font-size:1.13em;">
+                  <i class="fas fa-coins"></i> Distribución de costos
+                </div>
+                <canvas id="distribucionCostosChart" style="height:340px;max-height:340px;"></canvas>
+                <div style="font-size: 0.97em; color: #e15759; margin-top: 0.5em;">
+                  Proporción de los costos totales por retraso, estadía y pérdida durante toda la simulación.
+                </div>
               </div>
             </div>
           </div>
           <!-- Riesgos y Recomendación -->
           <div class="row g-4 mb-4">
             <div class="col-12 col-lg-6">
-              <div class="card card-risk h-100">
-                <h2 class="mb-2"><i class="fas fa-bolt"></i> Riesgos Detectados</h2>
-                <!-- Nuevo diseño: grid de tarjetas para riesgos -->
-                <div id="riesgosDetectadosGrid" class="riesgos-grid"></div>
-                <ul id="riesgosDetectados" class="riesgos-list d-none"></ul>
-              </div>
+              <!-- NUEVO DISEÑO: Riesgos Detectados -->
+              <section class="riesgos-block-visual h-100">
+                <div class="riesgos-header">
+                  <span class="riesgos-icon-main"><i class="fas fa-bolt"></i></span>
+                  <span class="riesgos-title">Riesgos Detectados</span>
+                </div>
+                <div id="riesgosDetectadosGrid" class="riesgos-grid-visual"></div>
+              </section>
             </div>
             <div class="col-12 col-lg-6">
-              <div class="card card-decision h-100">
-                <h2 class="mb-2"><i class="fas fa-lightbulb"></i> Recomendación Final</h2>
-                <div id="mejorDecision" class="decision-text">-</div>
+              <div class="extra-block h-100">
+                <h2><i class="fas fa-lightbulb"></i> Recomendación Final</h2>
+                <ul id="mejorDecision" class="sugerencias-list"></ul>
               </div>
             </div>
           </div>
           <!-- Resumen Ejecutivo y Sugerencias -->
           <div class="row g-4">
             <div class="col-12 col-lg-6">
-              <div class="extra-block h-100">
-                <h2><i class="fas fa-info-circle"></i> Resumen Ejecutivo</h2>
-                <div id="resumenEjecutivo" class="resumen-ejecutivo">
-                  <!-- Imagen o video representativo -->
-                  <div class="resumen-media mb-3">
-                    <img src="/appweb/img/summary-ship.png" alt="Resumen Barcazas" class="img-fluid resumen-img"
-                      style="max-width:180px; border-radius:14px; box-shadow:0 2px 8px #4fd1c522;">
-                  </div>
-                  <!-- El resumen se inserta aquí por JS -->
+              <!-- NUEVO DISEÑO: Resumen Ejecutivo -->
+              <section class="resumen-block-visual h-100">
+                <div class="resumen-header">
+                  <span class="resumen-icon-main"><i class="fas fa-info-circle"></i></span>
+                  <span class="resumen-title">Resumen Ejecutivo</span>
                 </div>
-              </div>
+                <div class="resumen-stats-row" id="resumenStatsRow"></div>
+                <div id="resumenEjecutivo" class="resumen-ejecutivo-visual"></div>
+              </section>
             </div>
             <div class="col-12 col-lg-6">
               <div class="extra-block h-100">

@@ -194,11 +194,8 @@ function agruparDiasPorEvento(eventos) {
 // Muestra los riesgos detectados, identificando correctamente el evento real de cada día
 function mostrarRiesgos() {
   const { resultados } = getSimData();
-  // NUEVO: grid visual
   const riesgosGrid = document.getElementById("riesgosDetectadosGrid");
-  const riesgosDiv = document.getElementById("riesgosDetectados");
   if (riesgosGrid) riesgosGrid.innerHTML = "";
-  if (riesgosDiv) riesgosDiv.innerHTML = "";
   if (!resultados.length) return;
 
   let riesgos = [];
@@ -293,14 +290,20 @@ function mostrarRiesgos() {
     }
   });
 
-  // Render en grid vistoso
+  // Render como tarjetas vistosas
   if (riesgosGrid) {
     if (riesgos.length === 0) {
-      riesgosGrid.innerHTML = `<div class="riesgo-card"><span class="riesgo-icon">✅</span><div><span class="riesgo-titulo">Sin riesgos significativos</span><div class="riesgo-desc">No se detectaron riesgos relevantes en la simulación.</div></div></div>`;
+      riesgosGrid.innerHTML = `<div class="riesgo-card-visual ok">
+        <span class="riesgo-icon">✅</span>
+        <div>
+          <span class="riesgo-titulo">Sin riesgos significativos</span>
+          <div class="riesgo-desc">No se detectaron riesgos relevantes en la simulación.</div>
+        </div>
+      </div>`;
     } else {
       riesgos.forEach(r => {
         const card = document.createElement("div");
-        card.className = "riesgo-card";
+        card.className = "riesgo-card-visual";
         card.innerHTML = `<span class="riesgo-icon">${r.icon}</span>
           <div>
             <span class="riesgo-titulo">${r.titulo}</span>
@@ -311,16 +314,252 @@ function mostrarRiesgos() {
       });
     }
   }
+}
 
-  // Fallback para lista original (por si no hay grid)
-  if (riesgosDiv) {
+// Extrae el evento real del campo evento: solo "Tormenta", "Huelga" o el texto personalizado de "Otro"
+// - Si contiene "Tormenta", devuelve "Tormenta"
+// - Si contiene "Huelga", devuelve "Huelga"
+// - Si empieza con "Otro ", devuelve el texto después de "Otro "
+/// - Si contiene solo "Ninguno", está vacío o es "Otro" sin texto, devuelve ""
+// - Si hay texto personalizado, devuelve ese texto limpiamente (sin "Ninguno", "Tormenta", "Huelga", "Otro")
+function obtenerEventoLimpio(eventoRaw) {
+  console.log("[obtenerEventoLimpio] Valor original recibido:", eventoRaw);
+  if (!eventoRaw || typeof eventoRaw !== "string") {
+    console.log("[obtenerEventoLimpio] Evento vacío o no es string. Retorna ''");
+    return "";
+  }
+  let valor = eventoRaw.trim();
+  console.log("[obtenerEventoLimpio] Tras trim:", valor);
+
+  // Normaliza espacios y mayúsculas/minúsculas
+  valor = valor.replace(/\s+/g, " ").trim();
+  console.log("[obtenerEventoLimpio] Tras normalizar espacios:", valor);
+
+  // Si contiene solo "Ninguno" o está vacío
+  if (/^ninguno$/i.test(valor) || valor === "") {
+    console.log("[obtenerEventoLimpio] Detectado 'Ninguno' o vacío. Retorna ''");
+    return "";
+  }
+
+  // Si contiene "Tormenta" (en cualquier parte)
+  if (/tormenta/i.test(valor)) {
+    console.log("[obtenerEventoLimpio] Detectado 'Tormenta'. Retorna 'Tormenta'");
+    return "Tormenta";
+  }
+
+  // Si contiene "Huelga" (en cualquier parte)
+  if (/huelga/i.test(valor)) {
+    console.log("[obtenerEventoLimpio] Detectado 'Huelga'. Retorna 'Huelga'");
+    return "Huelga";
+  }
+
+  // Si empieza con "Otro " y hay texto después
+  if (/^otro\s+/i.test(valor)) {
+    const resto = valor.replace(/^otro\s+/i, "").trim();
+    console.log("[obtenerEventoLimpio] Detectado 'Otro' con personalizado. Retorna:", resto);
+    return resto;
+  }
+
+  // Si es exactamente "Otro" (sin texto)
+  if (/^otro$/i.test(valor)) {
+    console.log("[obtenerEventoLimpio] Detectado 'Otro' sin texto. Retorna ''");
+    return "";
+  }
+
+  // Si contiene "Ninguno", "Tormenta", "Huelga", "Otro" y algo más (ej: "Ninguno Tormenta Huelga Otro Incendio")
+  // Elimina esas palabras y devuelve el resto limpio
+  let limpio = valor.replace(/\b(Ninguno|Tormenta|Huelga|Otro)\b/gi, "").trim();
+  if (limpio) {
+    console.log("[obtenerEventoLimpio] Detectado personalizado tras limpiar palabras reservadas. Retorna:", limpio);
+    return limpio;
+  }
+
+  // Si no, devuelve vacío
+  console.log("[obtenerEventoLimpio] No se encontró evento válido. Retorna ''");
+  return "";
+}
+
+/**
+ * Agrupa eventos consecutivos con el mismo nombre.
+ * @param {Array<{nombre: string, dia: number}>} eventos
+ * @returns {Array<{evento: string, dias: number[]}>}
+ */
+function agruparEventosConsecutivos(eventos) {
+  if (!eventos.length) return [];
+  // Ordenar por día
+  eventos.sort((a, b) => a.dia - b.dia);
+
+  const agrupados = [];
+  let grupoActual = {
+    evento: eventos[0].nombre,
+    dias: [eventos[0].dia]
+  };
+
+  for (let i = 1; i < eventos.length; i++) {
+    const ev = eventos[i];
+    // Si es el mismo evento y el día es consecutivo al anterior
+    if (ev.nombre === grupoActual.evento && ev.dia === grupoActual.dias[grupoActual.dias.length - 1] + 1) {
+      grupoActual.dias.push(ev.dia);
+    } else {
+      agrupados.push(grupoActual);
+      grupoActual = {
+        evento: ev.nombre,
+        dias: [ev.dia]
+      };
+    }
+  }
+  agrupados.push(grupoActual);
+  return agrupados;
+}
+
+// Agrupa días consecutivos en arrays de rangos
+function agruparDiasConsecutivos(dias) {
+  if (!dias.length) return [];
+  dias.sort((a, b) => a - b);
+  const grupos = [];
+  let grupoActual = [dias[0]];
+  for (let i = 1; i < dias.length; i++) {
+    if (dias[i] === grupoActual[grupoActual.length - 1] + 1) {
+      grupoActual.push(dias[i]);
+    } else {
+      grupos.push(grupoActual);
+      grupoActual = [dias[i]];
+    }
+  }
+  grupos.push(grupoActual);
+  return grupos;
+}
+
+// Agrupa días por evento (no solo consecutivos)
+function agruparDiasPorEvento(eventos) {
+  const mapa = {};
+  eventos.forEach(ev => {
+    if (!mapa[ev.nombre]) mapa[ev.nombre] = [];
+    mapa[ev.nombre].push({ dia: ev.dia, afectacion: ev.afectacion });
+  });
+  return mapa;
+}
+
+// Muestra los riesgos detectados, identificando correctamente el evento real de cada día
+function mostrarRiesgos() {
+  const { resultados } = getSimData();
+  const riesgosGrid = document.getElementById("riesgosDetectadosGrid");
+  if (riesgosGrid) riesgosGrid.innerHTML = "";
+  if (!resultados.length) return;
+
+  let riesgos = [];
+  let diasRetraso = [];
+
+  // Congestión: retrasos consecutivos >= 3 días
+  resultados.forEach((dia, idx) => {
+    if (dia.retrasosDiaAnterior > 0) {
+      diasRetraso.push(idx + 1);
+    } else {
+      if (diasRetraso.length >= 3) {
+        riesgos.push({
+          icon: "⚠️",
+          titulo: "Congestión",
+          desc: `En días ${diasRetraso[0]} a ${diasRetraso[diasRetraso.length - 1]}`,
+          extra: ""
+        });
+      }
+      diasRetraso = [];
+    }
+  });
+  if (diasRetraso.length >= 3) {
+    riesgos.push({
+      icon: "⚠️",
+      titulo: "Congestión",
+      desc: `En días ${diasRetraso[0]} a ${diasRetraso[diasRetraso.length - 1]}`,
+      extra: ""
+    });
+  }
+
+  // Agrupar días con llegadas mucho mayores a descargas
+  const diasLlegadasAltas = [];
+  resultados.forEach((dia, idx) => {
+    if (dia.llegadasNocturnas > 2 * dia.descargas) {
+      diasLlegadasAltas.push(idx + 1);
+    }
+  });
+  const gruposLlegadasAltas = agruparDiasConsecutivos(diasLlegadasAltas);
+  gruposLlegadasAltas.forEach(g => {
+    if (g.length === 1) {
+      const d = g[0];
+      riesgos.push({
+        icon: "⚠️",
+        titulo: "Desbalance",
+        desc: `Día ${d}: Llegadas (${resultados[d-1].llegadasNocturnas}) ≫ Descargas (${resultados[d-1].descargas})`,
+        extra: ""
+      });
+    } else {
+      riesgos.push({
+        icon: "⚠️",
+        titulo: "Desbalance",
+        desc: `Días ${g[0]} a ${g[g.length -1]}: Llegadas mucho mayores a descargas`,
+        extra: ""
+      });
+    }
+  });
+
+  // Eventos con afectación > 0
+  const eventos = [];
+  resultados.forEach((dia, idx) => {
+    let eventoLimpio = obtenerEventoLimpio(dia.evento);
+    let afectacion = parseFloat(dia.afectacion) || 0;
+    if (eventoLimpio && eventoLimpio !== "" && afectacion > 0) {
+      eventos.push({ nombre: eventoLimpio, dia: idx + 1, afectacion });
+    }
+  });
+
+  // Agrupa todos los días por evento (no solo consecutivos)
+  const eventosAgrupados = agruparDiasPorEvento(eventos);
+
+  Object.entries(eventosAgrupados).forEach(([nombre, lista]) => {
+    const icono =
+      nombre.toLowerCase() === "tormenta" ? "🌩️" :
+      nombre.toLowerCase() === "huelga" ? "✊" :
+      "🌦️";
+    const dias = lista.map(e => e.dia).sort((a, b) => a - b);
+    const afectacionProm = (lista.reduce((a, b) => a + b.afectacion, 0) / lista.length).toFixed(1);
+    if (dias.length === 1) {
+      riesgos.push({
+        icon: icono,
+        titulo: `Evento "${nombre}"`,
+        desc: `Día ${dias[0]} con afectación de ${lista[0].afectacion}%`,
+        extra: ""
+      });
+    } else {
+      riesgos.push({
+        icon: icono,
+        titulo: `Evento "${nombre}"`,
+        desc: `Días ${dias.join(", ")} (afectación promedio ${afectacionProm}%)`,
+        extra: ""
+      });
+    }
+  });
+
+  // Render como tarjetas vistosas
+  if (riesgosGrid) {
     if (riesgos.length === 0) {
-      riesgosDiv.innerHTML = "<li>No se detectaron riesgos significativos.</li>";
+      riesgosGrid.innerHTML = `<div class="riesgo-card-visual ok">
+        <span class="riesgo-icon">✅</span>
+        <div>
+          <span class="riesgo-titulo">Sin riesgos significativos</span>
+          <div class="riesgo-desc">No se detectaron riesgos relevantes en la simulación.</div>
+        </div>
+      </div>`;
     } else {
       riesgos.forEach(r => {
-        const li = document.createElement("li");
-        li.innerHTML = `<span class="riesgo-icon">${r.icon}</span> <b>${r.titulo}:</b> ${r.desc}`;
-        riesgosDiv.appendChild(li);
+        const card = document.createElement("div");
+        card.className = "riesgo-card-visual";
+        card.innerHTML = `<span class="riesgo-icon">${r.icon}</span>
+          <div>
+            <span class="riesgo-titulo">${r.titulo}</span>
+            <div class="riesgo-desc">${r.desc}</div>
+            ${r.extra ? `<div class="riesgo-extra">${r.extra}</div>` : ""}
+          </div>`;
+        riesgosGrid.appendChild(card);
       });
     }
   }
@@ -331,15 +570,37 @@ function mostrarGraficos() {
   const { resultados, promedios, periodos } = getSimData();
   const totalDias = resultados.length;
   // Limpia los gráficos antes de renderizar
-  ['barChart', 'pieChart', 'retrasosChart', 'utilizacionChart'].forEach(id => {
+  ['barChart', 'pieChart', 'retrasosChart', 'utilizacionChart', 'descargasDiariasChart', 'distribucionCostosChart'].forEach(id => {
     const canvas = document.getElementById(id);
     if (canvas) {
       const parent = canvas.parentNode;
       parent.innerHTML = `<canvas id="${id}"></canvas>`;
     }
   });
+
+  // --- Añade títulos visuales bonitos y centrados a TODOS los gráficos ---
+  function ensureChartTitle(canvasId, iconClass, colorClass, titleText) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const parent = canvas.parentNode;
+    // Evita duplicar el título si ya existe
+    if (!parent.querySelector('.fw-bold.chart-title')) {
+      const div = document.createElement('div');
+      div.className = `fw-bold mb-2 ${colorClass} chart-title text-center`;
+      div.style.fontSize = "1.13em";
+      div.innerHTML = `<i class="fas ${iconClass}"></i> ${titleText}`;
+      parent.insertBefore(div, canvas);
+    }
+  }
+  ensureChartTitle('barChart', 'fa-chart-bar', 'text-info', 'Promedios Diarios');
+  ensureChartTitle('pieChart', 'fa-chart-pie', 'text-warning', 'Llegadas Nocturnas');
+  ensureChartTitle('retrasosChart', 'fa-chart-line', 'text-primary', 'Retrasos Diarios');
+  ensureChartTitle('utilizacionChart', 'fa-percent', 'text-success', 'Utilización Servidor');
+  ensureChartTitle('descargasDiariasChart', 'fa-box-open', 'text-info', 'Distribución de descargas');
+  ensureChartTitle('distribucionCostosChart', 'fa-coins', 'text-warning', 'Distribución de costos');
+
   if (!resultados.length) {
-    ['barChart', 'pieChart', 'retrasosChart', 'utilizacionChart'].forEach(id => {
+    ['barChart', 'pieChart', 'retrasosChart', 'utilizacionChart', 'descargasDiariasChart', 'distribucionCostosChart'].forEach(id => {
       const canvas = document.getElementById(id);
       if (canvas) {
         canvas.parentNode.innerHTML = '<p class="no-data-msg">No hay datos disponibles.</p>';
@@ -516,12 +777,122 @@ function mostrarGraficos() {
       }
     }
   });
+
+  // --- NUEVO: Gráfico de Descargas Diarias ---
+  function mostrarGraficoDescargasDiarias(resultados) {
+    const dias = resultados.map((_, i) => `Día ${i + 1}`);
+    const descargas = resultados.map(r => r.descargas);
+    const ctx = document.getElementById('descargasDiariasChart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: dias,
+        datasets: [{
+          label: 'Descargas',
+          data: descargas,
+          backgroundColor: '#4e79a7'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: { display: false }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Día de Simulación' } },
+          y: { beginAtZero: true, title: { display: true, text: 'Cantidad de Descargas' } }
+        }
+      }
+    });
+  }
+
+  // --- NUEVO: Gráfico de Distribución de Costos ---
+  // Gráfico de barras para la distribución de costos
+  function mostrarGraficoDistribucionCostos(resultados) {
+    // Suma los costos por tipo a lo largo de toda la simulación
+    let totalRetraso = 0, totalEstadia = 0, totalPerdida = 0;
+    resultados.forEach(r => {
+      totalRetraso += r.costoRetraso || 0;
+      totalEstadia += r.costoEstadia || 0;
+      totalPerdida += r.costoPerdida || 0;
+    });
+
+    const ctx = document.getElementById('distribucionCostosChart');
+    if (!ctx) return;
+
+    // Paleta profesional: azul para retraso, dorado para estadía, rojo para pérdida
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Retraso', 'Estadía', 'Pérdida'],
+        datasets: [{
+          label: 'Costo (USD)',
+          data: [totalRetraso, totalEstadia, totalPerdida],
+          backgroundColor: [
+            '#2563eb',   // Retraso: azul 
+            '#fbbf24',   // Estadía: dorado/amarillo 
+            '#e11d48'    // Pérdida: rojo elegante y fuerte
+          ],
+          borderColor: [
+            '#1e40af',   // Borde azul oscuro
+            '#b45309',   // Borde dorado oscuro
+            '#991b1b'    // Borde rojo oscuro
+          ],
+          borderWidth: 2,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              // Tooltip amigable y claro para el usuario
+              label: ctx => {
+                const val = ctx.raw;
+                return `${ctx.label}: $${val.toLocaleString()}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: "Tipo de Costo",
+              font: { size: 15 }
+            }
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: "Costo en USD",
+              font: { size: 15 }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // --- NUEVO: Descargas Diarias ---
+  mostrarGraficoDescargasDiarias(resultados);
+
+  // --- NUEVO: Distribución de Costos ---
+  mostrarGraficoDistribucionCostos(resultados);
 }
 
 // Genera recomendaciones finales, personalizadas para cada tipo de evento y solo para el evento real de ese día
 function mostrarDecisionYResumen() {
   const { resultados, promedios } = getSimData();
-  let decision = "No hay suficientes datos para una recomendación.";
+  let decision = [];
   let resumen = "No hay datos de simulación cargados.";
   let sugerencias = [];
 
@@ -600,14 +971,13 @@ function mostrarDecisionYResumen() {
     });
 
     if (recomendaciones.length === 0) {
-      decision = `<span style="color:#36a2eb;font-weight:700;"><i class="fas fa-check-circle"></i> La operación fue eficiente y equilibrada.</span><br>
-      <span style="color:#4fd1c5;">Mantenga la estrategia actual y monitoree periódicamente los indicadores para asegurar la continuidad del buen desempeño.</span>`;
-    } else if (recomendaciones.length === 1) {
-      decision = `<span class="sugerencia-profesional">${recomendaciones[0]}</span>`;
+      decision = [
+        `<span style="color:#36a2eb;font-weight:700;"><i class="fas fa-check-circle"></i> La operación fue eficiente y equilibrada.</span>`,
+        `<span style="color:#4fd1c5;">Mantenga la estrategia actual y monitoree periódicamente los indicadores para asegurar la continuidad del buen desempeño.</span>`
+      ];
     } else {
-      decision = `<ul class="sugerencias-list">${recomendaciones.map(r => `<li>${r}</li>`).join("")}</ul>`;
+      decision = recomendaciones;
     }
-
     resumen = `
       <div>
         <span style="color:#4fd1c5;font-weight:600;">Promedio de llegadas:</span> <span style="font-weight:700;">${promedioLlegadas.toFixed(2)}</span><br>
@@ -653,10 +1023,50 @@ function mostrarDecisionYResumen() {
     sugerencias = Array.from(sugerenciasSet);
   }
 
-  const decDiv = document.getElementById("mejorDecision") || document.getElementById("recomendacion");
-  if (decDiv) decDiv.innerHTML = decision;
+  // NUEVO: Renderiza stats vistosos en Resumen Ejecutivo
+  const resumenStatsRow = document.getElementById("resumenStatsRow");
+  if (resumenStatsRow) {
+    resumenStatsRow.innerHTML = "";
+    if (resultados.length) {
+      const promedioUtil = resultados.reduce((acc, d) => acc + (d.descargas / 5), 0) / resultados.length;
+      const promedioRetrasos = parseFloat(promedios.promedioRetrasos || 0);
+      const promedioLlegadas = parseFloat(promedios.promedioLlegadas || 0);
+      const promedioDescargas = parseFloat(promedios.promedioDescargas || 0);
+      const totalPerdidas = localStorage.getItem("barcazasPerdidasSimulacion") !== null
+        ? parseInt(localStorage.getItem("barcazasPerdidasSimulacion"), 10)
+        : 0;
+      const stats = [
+        { label: "Prom. Llegadas", value: promedioLlegadas.toFixed(2) },
+        { label: "Prom. Descargas", value: promedioDescargas.toFixed(2) },
+        { label: "Prom. Retrasos", value: promedioRetrasos.toFixed(2) },
+        { label: "Utilización", value: (promedioUtil * 100).toFixed(1) + "%" },
+        { label: "Barcazas Perdidas", value: totalPerdidas }
+      ];
+      stats.forEach(stat => {
+        const div = document.createElement("div");
+        div.className = "resumen-stat-card";
+        div.innerHTML = `<div class="resumen-stat-label">${stat.label}</div>
+          <div class="resumen-stat-value">${stat.value}</div>`;
+        resumenStatsRow.appendChild(div);
+      });
+    }
+  }
+
+  // Recomendación Final como lista
+  const decUl = document.getElementById("mejorDecision");
+  if (decUl) {
+    decUl.innerHTML = "";
+    decision.forEach(r => {
+      const li = document.createElement("li");
+      li.innerHTML = r;
+      li.classList.add("sugerencia-profesional");
+      decUl.appendChild(li);
+    });
+  }
+  // Resumen Ejecutivo (texto)
   const resumenDiv = document.getElementById("resumenEjecutivo");
   if (resumenDiv) resumenDiv.innerHTML = resumen;
+  // Sugerencias de Mejora
   const sugList = document.getElementById("sugerenciasMejora");
   if (sugList) {
     sugList.innerHTML = "";
@@ -831,6 +1241,10 @@ window.exportarPDF = function() {
         ${getChartImg('retrasosChart')}
         <div class="pdf-chart-title">Utilización Servidor</div>
         ${getChartImg('utilizacionChart')}
+        <div class="pdf-chart-title">Descargas Diarias</div>
+        ${getChartImg('descargasDiariasChart')}
+        <div class="pdf-chart-title">Distribución de Costos</div>
+        ${getChartImg('distribucionCostosChart')}
       </div>
       <div class="pdf-section">
         <h2>Riesgos Detectados</h2>
@@ -896,3 +1310,5 @@ document.addEventListener("DOMContentLoaded", () => {
     span.textContent = nombre;
   }
 });
+
+// No se requieren cambios aquí, el JS ya inserta el contenido directamente en los IDs correspondientes.
