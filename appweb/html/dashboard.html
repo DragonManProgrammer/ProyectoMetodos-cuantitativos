@@ -79,40 +79,40 @@
             </div>
           </header>
           <!-- Tarjetas de KPIs principales -->
-          <div class="row g-3 justify-content-center mb-4 summary-cards">
+          <div class="row g-3 justify-content-center mb-4 summary-cards" id="kpiRow">
             <div class="col-6 col-sm-4 col-md-2">
-              <div class="card h-100 text-center">
-                <h2 class="mb-2"><i class="fas fa-clock"></i></h2>
-                <div class="small text-muted">Promedio Retrasos</div>
-                <p id="promedioRetrasos" class="card-value">-</p>
+              <div class="kpi-card kpi-pink h-100 text-center">
+                <div class="kpi-icon"><i class="fas fa-clock"></i></div>
+                <div class="kpi-label">Promedio Retrasos</div>
+                <div id="promedioRetrasos" class="kpi-value">-</div>
               </div>
             </div>
             <div class="col-6 col-sm-4 col-md-2">
-              <div class="card h-100 text-center">
-                <h2 class="mb-2"><i class="fas fa-ship"></i></h2>
-                <div class="small text-muted">Promedio Llegadas</div>
-                <p id="promedioLlegadas" class="card-value">-</p>
+              <div class="kpi-card kpi-blue h-100 text-center">
+                <div class="kpi-icon"><i class="fas fa-ship"></i></div>
+                <div class="kpi-label">Promedio Llegadas</div>
+                <div id="promedioLlegadas" class="kpi-value">-</div>
               </div>
             </div>
             <div class="col-6 col-sm-4 col-md-2">
-              <div class="card h-100 text-center">
-                <h2 class="mb-2"><i class="fas fa-arrow-down"></i></h2>
-                <div class="small text-muted">Promedio Descargas</div>
-                <p id="promedioDescargas" class="card-value">-</p>
+              <div class="kpi-card kpi-cyan h-100 text-center">
+                <div class="kpi-icon"><i class="fas fa-arrow-down"></i></div>
+                <div class="kpi-label">Promedio Descargas</div>
+                <div id="promedioDescargas" class="kpi-value">-</div>
               </div>
             </div>
             <div class="col-6 col-sm-4 col-md-2">
-              <div class="card card-warning h-100 text-center">
-                <h2 class="mb-2"><i class="fas fa-exclamation-triangle"></i></h2>
-                <div class="small text-muted">Barcazas Perdidas</div>
-                <p id="totalPerdidas" class="card-value">-</p>
+              <div class="kpi-card kpi-yellow h-100 text-center">
+                <div class="kpi-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="kpi-label">Barcazas Perdidas</div>
+                <div id="totalPerdidas" class="kpi-value">-</div>
               </div>
             </div>
             <div class="col-6 col-sm-4 col-md-2">
-              <div class="card card-accent h-100 text-center">
-                <h2 class="mb-2"><i class="fas fa-dollar-sign"></i></h2>
-                <div class="small text-muted">Costo Total</div>
-                <p id="costoGlobal" class="card-value">-</p>
+              <div class="kpi-card kpi-cyan h-100 text-center">
+                <div class="kpi-icon"><i class="fas fa-dollar-sign"></i></div>
+                <div class="kpi-label">Costo Total</div>
+                <div id="costoGlobal" class="kpi-value">-</div>
               </div>
             </div>
           </div>
@@ -205,7 +205,6 @@
                   <span class="resumen-icon-main"><i class="fas fa-info-circle"></i></span>
                   <span class="resumen-title">Resumen Ejecutivo</span>
                 </div>
-                <div class="resumen-stats-row" id="resumenStatsRow"></div>
                 <div id="resumenEjecutivo" class="resumen-ejecutivo-visual"></div>
               </section>
             </div>
@@ -222,6 +221,7 @@
   </div>
   <!-- Scripts principales -->
   <script src="/appweb/js/dashboard.js"></script>
+  <script src="/appweb/js/PDF.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

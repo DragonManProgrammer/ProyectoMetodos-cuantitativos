@@ -1064,8 +1064,8 @@ function mostrarDecisionYResumen() {
     });
   }
   // Resumen Ejecutivo (texto)
-  const resumenDiv = document.getElementById("resumenEjecutivo");
-  if (resumenDiv) resumenDiv.innerHTML = resumen;
+  const resumenDivLocal = document.getElementById("resumenEjecutivo");
+  if (resumenDivLocal) resumenDivLocal.innerHTML = resumen;
   // Sugerencias de Mejora
   const sugList = document.getElementById("sugerenciasMejora");
   if (sugList) {
@@ -1077,6 +1077,128 @@ function mostrarDecisionYResumen() {
       sugList.appendChild(li);
     });
   }
+
+  // --- Resultado Final automatizado ---
+  const resumenDiv = document.getElementById("resumenEjecutivo");
+  if (!resumenDiv) return;
+
+  if (!resultados.length) {
+    resumenDiv.innerHTML = `
+      <div class="resumen-final-titulo resumen-final-visual">
+        <i class="fas fa-info-circle"></i> Resultado Final automatizado
+      </div>
+      <div class="resumen-final-texto resumen-final-visual-empty">
+        No hay datos de simulación cargados.
+      </div>
+    `;
+    return;
+  }
+
+  // --- Análisis profesional estructurado y visual ---
+  const promedioUtil = resultados.reduce((acc, d) => acc + (d.descargas / 5), 0) / resultados.length;
+  const promedioRetrasos = parseFloat(promedios.promedioRetrasos || 0);
+  const promedioLlegadas = parseFloat(promedios.promedioLlegadas || 0);
+  const promedioDescargas = parseFloat(promedios.promedioDescargas || 0);
+  const lambda = promedioLlegadas;
+  const mu = promedioDescargas;
+  const c = 1;
+  const rho = mu > 0 ? lambda / (mu * c) : 0;
+  const perdidas = localStorage.getItem("barcazasPerdidasSimulacion") !== null
+    ? parseInt(localStorage.getItem("barcazasPerdidasSimulacion"), 10)
+    : 0;
+  const dias = resultados.length;
+
+  let analisis = `
+    <div class="resumen-seccion">
+      <h3 class="resumen-subtitulo">1. Indicadores Clave del Sistema</h3>
+      <ul class="resumen-lista">
+        <li>Tasa de llegadas (λ): <b>${lambda.toFixed(2)}</b> barcazas/día</li>
+        <li>Tasa de servicio (μ): <b>${mu.toFixed(2)}</b> barcazas/día</li>
+        <li>Factor de utilización (ρ): <b>${(rho * 100).toFixed(1)}%</b></li>
+        <li>Utilización empírica: <b>${(promedioUtil * 100).toFixed(1)}%</b></li>
+        <li>Retrasos promedio: <b>${promedioRetrasos.toFixed(2)}</b> barcazas/día</li>
+        <li>Barcazas perdidas: <b>${perdidas}</b> de un total de <b>${dias}</b> días</li>
+      </ul>
+    </div>
+    <div class="resumen-seccion">
+      <h3 class="resumen-subtitulo">2. Análisis de Capacidad y Demanda</h3>
+      <p>${getAnalisisCapacidad(lambda, mu, rho)}</p>
+    </div>
+    <div class="resumen-seccion">
+      <h3 class="resumen-subtitulo">3. Evaluación de Rendimiento</h3>
+      <p>${getAnalisisRendimiento(promedioRetrasos, perdidas, promedioUtil)}</p>
+    </div>
+    <div class="resumen-seccion">
+      <h3 class="resumen-subtitulo">4. Conclusión y Recomendaciones</h3>
+      <p>${getConclusionFinal(rho, promedioRetrasos, perdidas, promedioUtil)}</p>
+    </div>
+  `;
+
+  resumenDiv.innerHTML = `
+    <div class="resumen-final-titulo resumen-final-visual">
+      <i class="fas fa-award"></i> Resultado Final automatizado
+    </div>
+    <div class="resumen-final-card">
+      <div class="resumen-final-icon">
+        <i class="fas fa-chart-line"></i>
+      </div>
+      <div class="resumen-final-texto">
+        ${analisis}
+      </div>
+    </div>
+  `;
+}
+
+// --- Funciones auxiliares para análisis profesional ---
+function getAnalisisCapacidad(lambda, mu, rho) {
+  if (mu === 0) return "El sistema está inoperante debido a que no se registran descargas.";
+  if (lambda === 0) return "No hay demanda registrada en el sistema (sin llegadas).";
+  let analisis = "La relación entre demanda y capacidad indica que ";
+  if (rho < 0.7) {
+    analisis += `el sistema está <b>subutilizado</b> (ρ = ${(rho * 100).toFixed(1)}%). La capacidad instalada supera significativamente la demanda actual, lo que puede implicar recursos ociosos.`;
+  } else if (rho >= 0.7 && rho < 0.9) {
+    analisis += `el sistema opera en un <b>rango óptimo</b> (ρ = ${(rho * 100).toFixed(1)}%). La utilización es eficiente sin riesgo de saturación.`;
+  } else if (rho >= 0.9 && rho < 1) {
+    analisis += `el sistema opera cerca de su <b>capacidad máxima</b> (ρ = ${(rho * 100).toFixed(1)}%). Se recomienda monitoreo constante.`;
+  } else {
+    analisis += `el sistema está <b>sobresaturado</b> (ρ = ${(rho * 100).toFixed(1)}%). La demanda excede la capacidad de servicio.`;
+  }
+  return analisis;
+}
+
+function getAnalisisRendimiento(promedioRetrasos, perdidas, promedioUtil) {
+  let analisis = "";
+  if (promedioRetrasos > 2) {
+    analisis += `<b>Alto nivel de retrasos</b> (${promedioRetrasos.toFixed(2)} barcazas/día en promedio), indicando problemas de congestión. `;
+  } else if (promedioRetrasos > 0) {
+    analisis += `<b>Retrasos moderados</b> (${promedioRetrasos.toFixed(2)} barcazas/día en promedio), dentro de parámetros aceptables. `;
+  } else {
+    analisis += "<b>Sin retrasos significativos</b>, indicando una operación fluida. ";
+  }
+  if (perdidas > 0) {
+    analisis += `Se registraron <b>${perdidas} barcazas perdidas</b>, lo que sugiere problemas en la capacidad de retención del sistema. `;
+  } else {
+    analisis += "No se registran pérdidas de barcazas, indicando una gestión efectiva de la cola. ";
+  }
+  analisis += `La utilización promedio del ${(promedioUtil * 100).toFixed(1)}% ${
+    promedioUtil > 0.95 ? "sugiere posible saturación" :
+    promedioUtil < 0.6 ? "indica capacidad subutilizada" :
+    "representa un nivel adecuado de uso de recursos"
+  }.`;
+  return analisis;
+}
+
+function getConclusionFinal(rho, promedioRetrasos, perdidas, promedioUtil) {
+  if (rho < 0.7 && perdidas === 0) {
+    return `<b>El sistema está sobredimensionado</b>. Se recomienda evaluar la reducción de capacidad o buscar incrementar la demanda para optimizar recursos sin comprometer el servicio.`;
+  } 
+  if (rho >= 0.7 && rho < 1 && promedioRetrasos <= 2 && perdidas === 0) {
+    return `<b>El sistema muestra un desempeño óptimo</b>. La capacidad actual es adecuada para la demanda, manteniendo un balance entre eficiencia y nivel de servicio. Se recomienda mantener la configuración actual.`;
+  }
+  if (rho >= 1 || perdidas > 0 || promedioRetrasos > 2) {
+    return `<b>El sistema requiere ajustes operativos urgentes</b>. Los indicadores muestran saturación y pérdidas. Se recomienda aumentar la capacidad de servicio y/o implementar mejoras en la gestión de cola.`;
+  }
+  return `<b>El sistema opera en parámetros aceptables</b> pero requiere monitoreo continuo para prevenir potenciales problemas de capacidad.`;
 }
 
 // Exporta el resumen ejecutivo y visualización del dashboard a PDF
@@ -1311,4 +1433,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// No se requieren cambios aquí, el JS ya inserta el contenido directamente en los IDs correspondientes.
+
+// --- Resultado Final automatizado ---
+// (Removed duplicate block to avoid redeclaration of resumenDiv)
+
