@@ -556,11 +556,19 @@ td[contenteditable="true"]:focus {
   font-size: 1rem;
   font-weight: 600;
   border: none;
-  border-radius: 30px; /* 🔄 esquina redonda */
+  border-radius: 30px; /* 🔄 Esto redondea las esquinas */
   box-shadow: 0 4px 12px rgba(54, 162, 235, 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 100%; /* Por si no lo toma bien desde el HTML */
 }
+
+.btn-generar:hover {
+  background: linear-gradient(90deg, #0a3e39 0%, #064f4f 100%);
+  box-shadow: 0 6px 16px rgba(54, 162, 235, 0.4);
+  transform: scale(1.03);
+}
+
 
 .btn-generar:hover {
   background: linear-gradient(90deg, #0a3e39 0%, #064f4f 100%);
@@ -586,4 +594,12 @@ td[contenteditable="true"]:focus {
   background: linear-gradient(90deg, #0a3e39 0%, #064f4f 100%);
   box-shadow: 0 6px 16px rgba(54, 162, 235, 0.4);
   transform: scale(1.03);
+}
+
+button.btn-resultados {
+  border-radius: 30px !important;
+}
+
+button.btn-generar {
+  border-radius: 30px !important;
 }
