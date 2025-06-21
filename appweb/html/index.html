@@ -11,20 +11,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- NAVBAR -->
     <nav class="navbar">
         <img src="../img/logoPuerto.png" alt="Logo" class="navbar-logo" />
     </nav>
 
+    <!-- VIDEO DE FONDO -->
     <video autoplay muted loop playsinline id="bgVideo">
         <source src="../img/fondomar.mp4" type="video/mp4" />
     </video>
 
     <div class="overlay"></div>
 
-    <div class="contenido mt-5">
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="contenido flex-grow-1">
         <h1 class="titulo mt-2">Nautica Barcazas</h1>
-
         <p class="descripcion-simple sin-card">
             Descubra cómo se comporta un puerto real bajo condiciones cambiantes.
             Este simulador le permite experimentar con llegadas, descargas y eventos
@@ -41,47 +44,43 @@
                 <i class="fas fa-ship"></i> Empezar
             </button>
         </div>
-    </div>
+    </main>
 
-    <!-- Botón de instrucciones -->
-    <button id="infoBtn" class="btn-simple" style="position: fixed; bottom: 5.5rem; left: 2rem; z-index: 999;"
-        title="Ver instrucciones">
-        <i class="fas fa-book"></i> Help
+    <!-- BOTÓN DE INSTRUCCIONES -->
+    <button id="infoBtn" class="btn-simple estilo-brillante" title="Ver instrucciones">
+        <i class="fas fa-book"></i> Ayuda
     </button>
 
-    <!-- Modal de instrucciones -->
+    <!-- MODAL -->
     <div id="modal" class="modal-custom hidden">
         <div class="modal-content-custom-wide">
             <div class="modal-header-bar">
                 <h2>Manual de Uso</h2>
             </div>
 
-            <div class="tabs">
-                <button class="tab-button active" onclick="mostrarTabla('tabla1')">🧭 Navegación</button>
-                <button class="tab-button" onclick="mostrarTabla('tabla2')">🔘 Botones</button>
-            </div>
-
+<div class="tabs">
+  <button class="tab-button active" data-tab="tabla1" onclick="mostrarTabla('tabla1')">🌐 Navegación</button>
+  <button class="tab-button" data-tab="tabla2" onclick="mostrarTabla('tabla2')">🔘 Botones</button>
+</div>
             <div class="modal-scroll-area">
                 <div class="modal-body">
                     <div id="tabla1" class="tabla-contenido active">
                         <table class="tabla-instrucciones">
                             <tr>
                                 <th>Ingreso</th>
-                                <td>Escriba su nombre o empresa en el campo superior para comenzar. Este dato se usa
-                                    para personalizar la simulación.</td>
+                                <td>Escriba su nombre o empresa...</td>
                             </tr>
                             <tr>
                                 <th>Dashboard</th>
-                                <td>Vista principal con tarjetas resumen de métricas clave y gráficos de operación.</td>
+                                <td>Vista principal con métricas y gráficos.</td>
                             </tr>
                             <tr>
                                 <th>Resultados</th>
-                                <td>Muestra detalles de costos, promedios y gráficos por día tras ejecutar la
-                                    simulación.</td>
+                                <td>Resumen de costos e indicadores clave.</td>
                             </tr>
                             <tr>
                                 <th>Nueva Simulación</th>
-                                <td>Permite reiniciar el sistema para configurar una nueva simulación desde cero.</td>
+                                <td>Reinicia desde cero.</td>
                             </tr>
                         </table>
                     </div>
@@ -90,42 +89,23 @@
                         <table class="tabla-instrucciones">
                             <tr>
                                 <th>Botón “Empezar”</th>
-                                <td>Inicia la simulación y lleva a la vista de configuración inicial del puerto.</td>
+                                <td>Inicia la simulación.</td>
                             </tr>
                             <tr>
                                 <th>Parámetros iniciales</th>
-                                <td>
-                                    <ul>
-                                        <li><strong>Mín / Máx:</strong> Rango aleatorio de llegadas diarias de barcazas.
-                                        </li>
-                                        <li><strong>Días:</strong> Número de días a simular.</li>
-                                        <li><strong>Costos:</strong> Retraso, estadía y pérdida por barcaza.</li>
-                                        <li><strong>Tiempo máx. espera:</strong> Límite antes de considerar la barcaza
-                                            como perdida.</li>
-                                    </ul>
-                                </td>
+                                <td><ul><li>Mín/Máx llegadas</li><li>Días</li><li>Costos</li></ul></td>
                             </tr>
                             <tr>
                                 <th>Eventos diarios</th>
-                                <td>Puede seleccionar eventos como Tormenta, Huelga u Otro, que reducen la capacidad
-                                    diaria de descarga.</td>
-                            </tr>
-                            <tr>
-                                <th>Botón “Generar Simulación”</th>
-                                <td>Ejecuta la simulación y muestra los resultados diarios en tabla.</td>
+                                <td>Selecciona eventos como tormentas.</td>
                             </tr>
                             <tr>
                                 <th>Botón “Ver Resultados”</th>
-                                <td>Despliega el resumen de promedios, costos e indicadores claves con opción de ver
-                                    gráficos.</td>
+                                <td>Muestra promedios y gráficos.</td>
                             </tr>
                             <tr>
                                 <th>Botón “Exportar PDF”</th>
-                                <td>Genera un archivo con los resultados de la simulación.</td>
-                            </tr>
-                            <tr>
-                                <th>Botón “Modo Oscuro”</th>
-                                <td>Alterna entre modo claro y oscuro para una mejor visualización.</td>
+                                <td>Genera informe en PDF.</td>
                             </tr>
                         </table>
                     </div>
@@ -133,19 +113,16 @@
             </div>
 
             <div class="text-center modal-footer-fixed">
-                <!-- Asegúrate de que el botón Cerrar se vea así -->
                 <button id="btnCerrarModal" class="btn btn-info">Cerrar</button>
-
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="footer">
         © 2025 <strong>Nautica Barcazas</strong>. Todos los derechos reservados
     </footer>
 
-    <!-- Script externo -->
     <script src="../js/index.js"></script>
 </body>
 

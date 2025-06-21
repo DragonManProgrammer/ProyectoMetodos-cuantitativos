@@ -397,47 +397,209 @@ td[contenteditable="true"]:focus {
 
 
 
-
+/* NAVBAR BLUR CON FONDO COMPLETO */
 .navbar-blur {
-  position: fixed;
-  top: 0;
   width: 100%;
-  padding: 0.8rem 1.5rem;
-  background: rgba(0, 0, 0, 0.2); /* fondo transparente oscuro */
-  backdrop-filter: blur(8px); /* desenfoque elegante */
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 999;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  position: relative; /* ya no es fixed */
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  padding: 0.75rem 2rem;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.logo-navbar {
-  height: 44px;
-  width: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid white;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+/* Reestructura interna centrada */
+.navbar-blur .container {
+  max-width: 95%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+/* Logo circular */
+.logo-navbar {
+  height: 48px;
+  width: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+/* Saludo en el navbar */
+.saludo-elegante {
+  font-size: 1.1rem;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+/* FOOTER BLUR CON FONDO COMPLETO */
+.footer-blur {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  text-align: center;
+  color: #ccc;
+  padding: 1rem;
+  font-size: 0.9rem;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.4);
+}
+
+
+.fondo {
+    font-family: Arial, sans-serif;
+    background-image: url(../img/fondo2.jpg);
+    margin: 0; /* Cambiado de 50px a 0 */
+    min-height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* NAVBAR MEJORADO - OCUPA TODO EL ANCHO */
+.navbar-blur {
+    width: 100vw; /* Viewport width completo */
+    position: relative;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0;
+    left: 0;
+    right: 0;
+}
+
+/* Contenedor interno con límites */
+.navbar-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Logo mejorado */
+.logo-navbar {
+    height: 55px;
+    width: 55px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.logo-navbar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* Saludo elegante mejorado solo texto */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 .saludo-elegante {
-  font-family: 'Segoe UI', 'Poppins', sans-serif;
-  font-size: 1.2rem;
-  color: #ffffff;
-  font-weight: 600;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    font-family: 'Poppins', sans-serif; /* ✅ Fuente moderna */
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #ffffff;
+    background: none;
+    padding: 0.3rem 0.8rem;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    letter-spacing: 0.4px;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-.footer-blur {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  color: #ddd;
-  font-size: 0.9rem;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 999;
+.saludo-elegante:hover {
+    color: #d4e9ff;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+    .saludo-elegante {
+        font-size: 1rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .logo-navbar {
+        height: 42px;
+        width: 42px;
+    }
+}
+
+.saludo-elegante .nombre {
+    font-weight: 600;
+    color: #a2d9ff;
+}
+
+
+.btn-generar {
+  background: linear-gradient(90deg, #115561 0%, #15655d 100%);
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 30px; /* 🔄 Esto redondea las esquinas */
+  box-shadow: 0 4px 12px rgba(54, 162, 235, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%; /* Por si no lo toma bien desde el HTML */
+}
+
+.btn-generar:hover {
+  background: linear-gradient(90deg, #0a3e39 0%, #064f4f 100%);
+  box-shadow: 0 6px 16px rgba(54, 162, 235, 0.4);
+  transform: scale(1.03);
+}
+
+
+.btn-generar:hover {
+  background: linear-gradient(90deg, #0a3e39 0%, #064f4f 100%);
+  box-shadow: 0 6px 16px rgba(54, 162, 235, 0.4);
+  transform: scale(1.03);
+}
+
+
+.btn-resultados {
+  background: linear-gradient(90deg, #115561 0%, #15655d 100%);
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 30px; /* 🔄 esquina redonda */
+  box-shadow: 0 4px 12px rgba(54, 162, 235, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-resultados:hover {
+  background: linear-gradient(90deg, #0a3e39 0%, #064f4f 100%);
+  box-shadow: 0 6px 16px rgba(54, 162, 235, 0.4);
+  transform: scale(1.03);
+}
+
+button.btn-resultados {
+  border-radius: 30px !important;
+}
+
+button.btn-generar {
+  border-radius: 30px !important;
 }

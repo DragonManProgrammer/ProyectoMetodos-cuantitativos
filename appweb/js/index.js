@@ -32,15 +32,20 @@ function cerrarModal() {
 }
 
 function mostrarTabla(id) {
+  // Oculta todas las tablas
   document.querySelectorAll(".tabla-contenido").forEach(t => t.classList.remove("active"));
+
+  // Quita clase activa de todos los botones
   document.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
 
+  // Muestra la tabla seleccionada
   document.getElementById(id).classList.add("active");
 
-  const btn = Array.from(document.querySelectorAll(".tab-button"))
-    .find(b => b.textContent.includes(id === "tabla1" ? "Navegación" : "Botones"));
+  // Activa el botón correspondiente usando data-tab
+  const btn = document.querySelector(`.tab-button[data-tab="${id}"]`);
   if (btn) btn.classList.add("active");
 }
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const infoBtn = document.getElementById('infoBtn');
