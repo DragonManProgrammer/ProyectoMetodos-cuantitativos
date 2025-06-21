@@ -1,257 +1,185 @@
-/* --- PDF mejoras visuales --- */
+/* PDF.css renovado: estilo elegante y coherente con el dashboard */
+body, .pdf-section {
+  background: #f7fafc;
+  color: #1a2636;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+}
 .pdf-header {
+  background: linear-gradient(90deg, #36a2eb 60%, #4fd1c5 100%);
+  color: #fff;
+  padding: 2em 1.5em 1.2em 1.5em;
+  border-radius: 0 0 24px 24px;
   text-align: center;
-  margin-bottom: 2.5rem;
-  padding-top: 2.2rem;
-  background: linear-gradient(90deg, #e0f7fa 60%, #f7fafc 100%);
-  border-radius: 0 0 32px 32px;
-  box-shadow: 0 6px 24px #4fd1c522;
+  box-shadow: 0 2px 12px #36a2eb22;
+  margin-bottom: 1.5em;
 }
 .pdf-header h1 {
-  color: #36a2eb;
-  font-size: 2.7rem;
-  margin-bottom: 0.2rem;
-  letter-spacing: 2px;
-  font-weight: 900;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  text-shadow: 0 2px 12px #4fd1c544;
+  font-size: 2.1em;
+  font-weight: 800;
+  margin-bottom: 0.2em;
+  letter-spacing: 1px;
 }
 .pdf-header .pdf-subtitle {
-  color: #4fd1c5;
-  font-size: 1.22rem;
-  margin-bottom: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-shadow: 0 1px 8px #4fd1c544;
+  font-size: 1.15em;
+  font-weight: 600;
+  color: #e0f7fa;
+  margin-bottom: 0.2em;
 }
 .pdf-section {
-  background: linear-gradient(120deg, #f7fafc 70%, #e0f7fa 100%);
-  border-radius: 22px;
-  box-shadow: 0 6px 32px #4fd1c522, 0 1.5px 0 #4fd1c5;
-  padding: 2.5rem 3rem 2.2rem 3rem;
-  margin: 0 auto 2.5rem auto;
-  max-width: 950px;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  border-left: 7px solid #36a2eb;
-  border-right: 7px solid #4fd1c5;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #36a2eb22;
+  padding: 2em 2.2em 1.5em 2.2em;
+  margin: 1.2em auto 1.5em auto;
+  max-width: 900px;
 }
 .pdf-section h2 {
   color: #36a2eb;
-  font-size: 1.45rem;
-  margin-bottom: 1.2rem;
-  border-bottom: 2.5px solid #e0f7fa;
-  padding-bottom: 0.5rem;
-  text-align: left;
-  letter-spacing: 0.7px;
+  font-size: 1.25em;
   font-weight: 800;
-  background: linear-gradient(90deg, #e0f7fa 60%, #fff 100%);
-  border-radius: 0 0 12px 12px;
-  box-shadow: 0 2px 8px #4fd1c522;
-}
-.pdf-section ul {
-  color: #1a2636;
-  font-size: 1.12rem;
-  margin-left: 1.2rem;
-  margin-bottom: 1.2em;
-  padding-left: 0.5em;
-  font-weight: 500;
-}
-.pdf-section .decision-text {
-  color: #36a2eb;
-  font-size: 1.13rem;
-  margin-top: 0.7rem;
-  margin-bottom: 0.7rem;
-  background: linear-gradient(90deg, #e0f7fa 60%, #f0f8ff 100%);
-  border-left: 5px solid #36a2eb;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px #36a2eb22;
-  padding: 1rem 1.3rem;
-  text-align: justify;
-  font-weight: 600;
-}
-.pdf-footer {
-  text-align: right;
-  color: #888;
-  font-size: 1.05rem;
-  margin-top: 2.5rem;
-  padding-bottom: 1.5rem;
-  font-style: italic;
+  margin-bottom: 1.1em;
   letter-spacing: 0.5px;
+  border-left: 5px solid #4fd1c5;
+  padding-left: 0.5em;
 }
 .pdf-kpi-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 2em;
-  justify-content: flex-start;
-  margin-bottom: 2rem;
+  gap: 1.2em;
+  justify-content: center;
+  margin-bottom: 1.5em;
 }
 .pdf-kpi-card {
-  background: linear-gradient(120deg, #e0f7fa 70%, #fff 100%);
-  border-radius: 16px;
-  box-shadow: 0 4px 18px #4fd1c522;
-  padding: 1.3em 2.2em 1.1em 1.5em;
-  min-width: 170px;
-  max-width: 230px;
+  background: linear-gradient(100deg, #e0f7fa 70%, #fff 100%);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px #4fd1c522;
+  padding: 1.2em 1.7em 1em 1.7em;
+  min-width: 150px;
+  max-width: 220px;
+  text-align: center;
+  border-left: 6px solid #36a2eb;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 0.5em;
-  border-left: 6px solid #36a2eb;
-  border-right: 6px solid #4fd1c5;
-  transition: box-shadow 0.2s;
 }
 .pdf-kpi-icon {
-  font-size: 2.5em;
+  font-size: 2.2em;
   margin-bottom: 0.2em;
-  text-shadow: 0 2px 8px #4fd1c544;
 }
 .pdf-kpi-label {
-  color: #36a2eb;
-  font-size: 1.09em;
+  color: #888;
+  font-size: 1.01em;
   margin-bottom: 0.2em;
-  font-weight: 700;
-  letter-spacing: 0.5px;
 }
 .pdf-kpi-value {
   color: #1a2636;
-  font-size: 1.5em;
-  font-weight: 900;
-  letter-spacing: 0.5px;
+  font-size: 1.35em;
+  font-weight: 700;
 }
 .pdf-chart-title {
-  color: #4fd1c5;
-  font-size: 1.13rem;
-  margin: 1.2rem 0 0.5rem 0;
+  color: #36a2eb;
+  font-size: 1.08em;
   font-weight: 700;
+  margin: 1.2em 0 0.5em 0;
   text-align: left;
-  letter-spacing: 0.5px;
 }
 .pdf-chart-img {
-  max-width: 100%;
-  margin-bottom: 1.2rem;
-  border-radius: 14px;
-  box-shadow: 0 2px 12px #4fd1c522;
+  width: 100%;
+  max-width: 650px;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0.5em auto 1.2em auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #36a2eb22;
 }
-.pdf-section .pdf-sugerencias-list {
-  background: linear-gradient(90deg, #f7fafc 60%, #e0f7fa 100%);
-  border-radius: 12px;
-  border-left: 5px solid #a3e635;
-  box-shadow: 0 2px 8px #a3e63522;
-  padding: 1.2em 1.7em;
-  margin-bottom: 0.7em;
-  margin-top: 0.7em;
-  font-size: 1.13em;
-  color: #1a2636;
-  font-weight: 500;
-}
-.pdf-section .pdf-sugerencias-list li {
-  text-align: justify;
-  text-justify: inter-word;
-  margin-bottom: 0.7em;
-  border-bottom: 1px dashed #a3e63544;
-  padding-bottom: 0.4em;
-  padding-left: 0.2em;
-  list-style: disc inside;
-  font-size: 1.08em;
-}
-.pdf-section .pdf-sugerencias-list li:last-child {
-  border-bottom: none;
-}
-.pdf-section .pdf-resumen-ejecutivo {
-  background: linear-gradient(90deg, #e0f7fa 60%, #f7fafc 100%);
-  border-radius: 12px;
-  border-left: 5px solid #4fd1c5;
-  box-shadow: 0 2px 8px #4fd1c522;
-  padding: 1.4em 2.2em;
-  margin: 0.7em auto;
-  font-size: 1.18em;
-  color: #1a2636;
-  max-width: 700px;
-  text-align: justify;
-  font-weight: 500;
-}
-.pdf-section .pdf-resumen-ejecutivo b {
-  color: #3682d6;
-}
-.pdf-section .pdf-riesgos-list {
-  background: linear-gradient(90deg, #fffbe6 60%, #fff 100%);
-  border-radius: 12px;
-  border-left: 6px solid #d9534f;
-  box-shadow: 0 2px 8px #fbbf2444;
-  padding: 1.2em 1.7em;
-  margin-bottom: 0.7em;
-  font-size: 1.13em;
-  color: #b91c1c;
-  list-style: none;
-}
-.pdf-section .pdf-riesgos-list li {
-  margin-bottom: 0.7em;
-  padding-left: 0.2em;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.7em;
-  font-size: 1.13em;
-  line-height: 1.6;
-  border-bottom: 1px dashed #fbbf24;
-}
-.pdf-section .pdf-riesgos-list li:last-child {
-  border-bottom: none;
-}
-.pdf-section .pdf-riesgos-list li b {
-  color: #232b36;
-}
-/* --- Riesgos PDF visual mejorado --- */
 .pdf-riesgo-card {
   background: linear-gradient(100deg, #fffbe6 70%, #fff 100%);
-  border-radius: 15px;
-  box-shadow: 0 2px 12px #fbbf2444;
-  border-left: 6px solid #d9534f;
-  padding: 1.1em 1.5em 1.1em 1.5em;
+  border-radius: 11px;
+  box-shadow: 0 1px 4px #fbbf2444;
+  border-left: 4px solid #d9534f;
+  padding: 0.7em 1em 0.7em 1em;
   color: #b91c1c;
   min-height: 60px;
   display: flex;
   align-items: flex-start;
-  gap: 1em;
-  font-size: 1.13rem;
-  margin-bottom: 1em;
-  font-weight: 500;
+  gap: 0.7em;
+  font-size: 1.08rem;
+  margin-bottom: 0.7em;
 }
 .pdf-riesgo-ok {
-  border-left: 6px solid #4fd1c5;
+  border-left: 4px solid #4fd1c5;
   color: #22a06b;
   background: linear-gradient(100deg, #e0f7fa 70%, #fff 100%);
 }
 .pdf-riesgo-icon {
-  font-size: 2.3em;
-  margin-right: 0.4em;
+  font-size: 1.5em;
+  margin-right: 0.2em;
   flex-shrink: 0;
   margin-top: 0.1em;
-  filter: drop-shadow(0 2px 8px #fbbf2444);
 }
 .pdf-riesgo-titulo {
+  font-size: 1.08em;
   font-weight: 700;
   color: #232b36;
-  font-size: 1.13em;
-  margin-bottom: 0.2em;
+  margin-bottom: 0.1em;
   display: block;
 }
 .pdf-riesgo-desc {
-  font-size: 1.05em;
+  font-size: 0.98em;
   color: #b91c1c;
   margin-bottom: 0.1em;
   line-height: 1.5;
 }
-
-/* --- Responsive --- */
-@media (max-width: 900px) {
-  .pdf-section { padding: 1.1rem 0.5rem; }
-  .pdf-header h1 { font-size: 2rem; }
-  .pdf-section h2 { font-size: 1.1rem; }
-  .pdf-kpi-card { min-width: 120px; padding: 1em 0.7em 1em 0.7em; }
-  .pdf-section .pdf-resumen-ejecutivo { font-size: 1em; padding: 1em 0.7em; }
+.decision-text {
+  font-size: 1.08em;
+  color: #1a2636;
+  background: #f0f8ff;
+  border-radius: 6px;
+  border-left: 4px solid #36a2eb;
+  box-shadow: 0 1px 4px #36a2eb22;
+  padding: 1em 1.5em;
+  margin-bottom: 1em;
+  font-weight: 500;
+  text-align: justify;
 }
-
-/* --- Fin de estilos --- */
+.pdf-resumen-ejecutivo {
+  background: #e0f7fa;
+  border-radius: 10px;
+  border-left: 4px solid #4fd1c5;
+  box-shadow: 0 1px 4px #4fd1c522;
+  padding: 1.2em 2em;
+  margin: 0.7em auto;
+  font-size: 1.13em;
+  color: #1a2636;
+  max-width: 650px;
+}
+.pdf-sugerencias-list {
+  background: #f7fafc;
+  border-radius: 10px;
+  border-left: 4px solid #a3e635;
+  box-shadow: 0 1px 4px #a3e63522;
+  padding: 1.1em 1.5em;
+  margin-bottom: 0.7em;
+  font-size: 1.08em;
+  color: #1a2636;
+  list-style: disc inside;
+}
+.pdf-sugerencias-list li {
+  margin-bottom: 0.6em;
+  text-align: justify;
+  text-justify: inter-word;
+}
+.pdf-footer {
+  text-align: right;
+  color: #888;
+  font-size: 0.97em;
+  margin: 2em 2em 0.5em 0;
+}
+@media print {
+  .pdf-section, .pdf-header {
+    box-shadow: none !important;
+    background: #fff !important;
+    color: #1a2636 !important;
+  }
+}

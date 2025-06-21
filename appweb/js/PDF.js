@@ -1,9 +1,7 @@
 // Exporta el resumen ejecutivo y visualización del dashboard a PDF
 window.exportarPDF = function() {
-  // Siempre obtiene la información actualizada directamente del DOM y de las funciones de cálculo
   const { resultados, promedios, nombreEmpresa } = getSimData ? getSimData() : {resultados:[], promedios:{}, nombreEmpresa:""};
   const empresa = document.getElementById("empresaNombre")?.textContent || nombreEmpresa || "";
-  // KPIs actualizados
   const promedioRetrasos = promedios.promedioRetrasos || "-";
   const promedioLlegadas = promedios.promedioLlegadas || "-";
   const promedioDescargas = promedios.promedioDescargas || "-";
@@ -25,16 +23,12 @@ window.exportarPDF = function() {
     { label: "Barcazas Perdidas", value: totalPerdidas, icon: "fa-exclamation-triangle", color: "#fbbf24" },
     { label: "Costo Total", value: totalCosto, icon: "fa-dollar-sign", color: "#4fd1c5" }
   ];
-  // Resumen Ejecutivo actualizado
   const resumenDiv = document.getElementById("resumenEjecutivo");
   const resumen = resumenDiv ? resumenDiv.innerHTML : "";
-  // Recomendación y sugerencias actualizadas
   const decision = document.getElementById("mejorDecision");
   const sugerencias = document.getElementById("sugerenciasMejora");
-  // Riesgos actualizados
   const riesgos = document.getElementById("riesgosDetectadosGrid");
 
-  // Gráficos principales
   function getChartImg(id) {
     const canvas = document.getElementById(id);
     if (canvas && canvas.toDataURL) {
@@ -42,17 +36,15 @@ window.exportarPDF = function() {
     }
     return "";
   }
-  // KPIs visuales
   function kpiCard(label, value, icon, color) {
     return `
-      <div class="pdf-kpi-card" style="border-left:5px solid ${color};">
+      <div class="pdf-kpi-card" style="border-left:6px solid ${color};">
         <div class="pdf-kpi-icon" style="color:${color};"><i class="fas ${icon}"></i></div>
         <div class="pdf-kpi-label">${label}</div>
         <div class="pdf-kpi-value">${value}</div>
       </div>
     `;
   }
-  // Riesgos visuales mejorados
   function riesgosPDFList() {
     if (!riesgos || !riesgos.children.length) {
       return `<div class="pdf-riesgo-card pdf-riesgo-ok">
@@ -64,7 +56,6 @@ window.exportarPDF = function() {
       </div>`;
     }
     return Array.from(riesgos.children).map(li => {
-      // Extraer icono, título y descripción si están presentes
       const temp = document.createElement('div');
       temp.innerHTML = li.innerHTML;
       const icon = temp.querySelector('.riesgo-icon')?.textContent || "⚠️";
@@ -82,7 +73,6 @@ window.exportarPDF = function() {
     }).join('');
   }
 
-  // PDF ventana
   const win = window.open('', '', 'width=1000,height=800');
   win.document.write(`
     <html>
