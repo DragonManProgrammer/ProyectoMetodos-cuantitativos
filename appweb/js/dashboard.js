@@ -15,25 +15,34 @@ document.addEventListener("DOMContentLoaded", function() {
       document.body.classList.toggle('darkmode');
     };
   }
+  // Cargar datos al iniciar
+  mostrarResumen();
+  mostrarRiesgos();
+  mostrarGraficos();
+  mostrarDecisionYResumen();
 });
 
 // Muestra los valores clave en las tarjetas principales
 function mostrarResumen() {
   const { promedios, resultados, nombreEmpresa } = getSimData();
-  // Muestra el nombre de la empresa si existe
-  document.getElementById("empresaNombre").textContent = nombreEmpresa ? `Empresa: ${nombreEmpresa}` : "";
+  const empresaEl = document.getElementById("empresaNombre");
+  if (empresaEl) {
+    empresaEl.textContent = nombreEmpresa ? `Empresa: ${nombreEmpresa}` : "";
+  }
+  
   document.getElementById("promedioRetrasos").textContent = promedios.promedioRetrasos || "-";
   document.getElementById("promedioLlegadas").textContent = promedios.promedioLlegadas || "-";
   document.getElementById("promedioDescargas").textContent = promedios.promedioDescargas || "-";
-  // Calcula el costo total y barcazas perdidas
+  
   let costoGlobal = "-";
   let totalPerdidas = "-";
+  
   if (resultados.length > 0) {
     const costoPorRetraso = 800, costoOperacion = 500, costoFijoDiario = 25000, costoPorPerdida = 5000;
     const totalRetrasos = resultados.reduce((acc, d) => acc + (d.retrasosDiaAnterior || 0), 0);
     const totalDescargas = resultados.reduce((acc, d) => acc + (d.descargas || 0), 0);
     const diasSimulados = resultados.length;
-    // Calcula barcazas perdidas
+    
     let cola = [], barcazasPerdidas = 0;
     resultados.forEach(dia => {
       for (let i = 0; i < dia.llegadasNocturnas; i++) cola.push(0);
@@ -46,18 +55,26 @@ function mostrarResumen() {
     totalPerdidas = barcazasPerdidas;
     costoGlobal = (totalRetrasos * costoPorRetraso) + (totalDescargas * costoOperacion) + (diasSimulados * costoFijoDiario) + (barcazasPerdidas * costoPorPerdida);
   }
-  document.getElementById("costoGlobal").textContent = costoGlobal;
-  document.getElementById("totalPerdidas").textContent = totalPerdidas;
+  
+  document.getElementById("costoGlobal").textContent = costoGlobal !== "-" ? `$${costoGlobal.toLocaleString()}` : "-";
+  document.getElementById("totalPerdidas").textContent = totalPerdidas !== "-" ? totalPerdidas : "-";
 }
 
 // Muestra los riesgos detectados en la simulación
 function mostrarRiesgos() {
   const { resultados } = getSimData();
   const riesgosDiv = document.getElementById("riesgosDetectados");
+  if (!riesgosDiv) return;
   riesgosDiv.innerHTML = "";
-  if (!resultados.length) return;
+  
+  if (!resultados.length) {
+    riesgosDiv.innerHTML = "<li>No hay datos de simulación disponibles.</li>";
+    return;
+  }
+  
   let riesgos = [];
   let diasRetraso = [];
+  
   resultados.forEach((dia, idx) => {
     if (dia.retrasosDiaAnterior > 0) {
       diasRetraso.push(idx + 1);
@@ -68,16 +85,19 @@ function mostrarRiesgos() {
       diasRetraso = [];
     }
   });
+  
   if (diasRetraso.length >= 3) {
     riesgos.push(`⚠️ Congestión en días ${diasRetraso[0]} a ${diasRetraso[diasRetraso.length - 1]}`);
   }
+  
   resultados.forEach((dia, idx) => {
-    if (dia.llegadasNocturnas > 2 * dia.descargas) {
+    if (dia.llegadasNocturnas > 2 * dia.descargas && dia.descargas > 0) {
       riesgos.push(`⚠️ Día ${idx + 1}: Llegadas (${dia.llegadasNocturnas}) mucho mayores a descargas (${dia.descargas})`);
     }
   });
+  
   if (riesgos.length === 0) {
-    riesgosDiv.innerHTML = "<li>No se detectaron riesgos significativos.</li>";
+    riesgosDiv.innerHTML = "<li>✅ No se detectaron riesgos significativos.</li>";
   } else {
     riesgos.forEach(msg => {
       const li = document.createElement("li");
@@ -90,139 +110,222 @@ function mostrarRiesgos() {
 // Renderiza los gráficos principales del dashboard
 function mostrarGraficos() {
   const { resultados, promedios } = getSimData();
-  // Limpia los gráficos antes de renderizar
+  
+  // Limpiar contenedores de gráficos
   ['barChart', 'pieChart', 'retrasosChart', 'utilizacionChart'].forEach(id => {
-    const canvas = document.getElementById(id);
-    if (canvas) {
-      const parent = canvas.parentNode;
-      parent.innerHTML = `<canvas id="${id}"></canvas>`;
+    const container = document.getElementById(id);
+    if (container) {
+      const parent = container.parentElement;
+      // Recrear canvas para evitar conflictos
+      const newCanvas = document.createElement('canvas');
+      newCanvas.id = id;
+      parent.innerHTML = '';
+      parent.appendChild(newCanvas);
     }
   });
+  
   if (!resultados.length) {
     ['barChart', 'pieChart', 'retrasosChart', 'utilizacionChart'].forEach(id => {
       const canvas = document.getElementById(id);
       if (canvas) {
-        canvas.parentNode.innerHTML = '<p class="no-data-msg">No hay datos disponibles.</p>';
+        const parent = canvas.parentElement;
+        parent.innerHTML = '<p class="text-muted text-center mt-3">No hay datos disponibles. Genere una simulación primero.</p>';
       }
     });
     return;
   }
-  // Gráfico de barras: Promedios diarios
-  new Chart(document.getElementById('barChart'), {
-    type: 'bar',
-    data: {
-      labels: ['Retrasos', 'Llegadas', 'Descargas'],
-      datasets: [{
-        label: 'Promedio Diario',
-        data: [
-          parseFloat(promedios.promedioRetrasos || 0),
-          parseFloat(promedios.promedioLlegadas || 0),
-          parseFloat(promedios.promedioDescargas || 0)
-        ],
-        backgroundColor: ['#ff6384', '#36a2eb', '#4fd1c5']
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        title: { display: true, text: 'Promedios Diarios' }
-      },
-      scales: {
-        x: { title: { display: true, text: 'Categoría' } },
-        y: { beginAtZero: true, title: { display: true, text: 'Cantidad Promedio' } }
-      }
-    }
-  });
-
-  // Gráfico de pastel: Llegadas nocturnas
-  const llegadas = [0, 0, 0, 0, 0, 0];
-  resultados.forEach(dia => {
-    if (dia.llegadasNocturnas >= 0 && dia.llegadasNocturnas <= 5) {
-      llegadas[dia.llegadasNocturnas]++;
-    }
-  });
-  new Chart(document.getElementById('pieChart'), {
-    type: 'pie',
-    data: {
-      labels: ['0', '1', '2', '3', '4', '5'],
-      datasets: [{
-        label: 'Llegadas Nocturnas',
-        data: llegadas,
-        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4fd1c5', '#a3e635', '#f87171']
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: { display: true, text: 'Distribución de Llegadas Nocturnas' }
-      }
-    }
-  });
-
-  // Gráfico de líneas: Retrasos diarios
-  new Chart(document.getElementById('retrasosChart'), {
-    type: 'line',
-    data: {
-      labels: resultados.map((_, i) => i + 1),
-      datasets: [{
-        label: 'Retrasos Diarios',
-        data: resultados.map(d => d.retrasosDiaAnterior),
-        borderColor: '#ff6384',
-        backgroundColor: 'rgba(255,99,132,0.13)',
-        fill: true,
-        tension: 0.2,
-        pointRadius: 3,
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: { display: true, text: 'Retrasos Diarios' }
-      },
-      scales: {
-        x: { title: { display: true, text: 'Día' } },
-        y: { beginAtZero: true, title: { display: true, text: 'Cantidad de Barcazas Retrasadas' } }
-      }
-    }
-  });
-
-  // Gráfico de líneas: Utilización del servidor diaria
-  const utilizacion = resultados.map(d => d.descargas / 5);
-  new Chart(document.getElementById('utilizacionChart'), {
-    type: 'line',
-    data: {
-      labels: resultados.map((_, i) => i + 1),
-      datasets: [{
-        label: 'Utilización del Servidor',
-        data: utilizacion,
-        borderColor: '#4fd1c5',
-        backgroundColor: 'rgba(79,209,197,0.18)',
-        fill: true,
-        tension: 0.2,
-        pointRadius: 3,
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: { display: true, text: 'Utilización del Servidor Diaria' }
-      },
-      scales: {
-        x: { title: { display: true, text: 'Día' } },
-        y: {
-          beginAtZero: true,
-          max: 1,
-          title: { display: true, text: 'Porcentaje de Utilización' },
-          ticks: {
-            callback: function (value) {
-              return (value * 100).toFixed(0) + "%";
+  
+  try {
+    // Gráfico de barras: Promedios diarios
+    const barCtx = document.getElementById('barChart');
+    if (barCtx) {
+      new Chart(barCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Retrasos', 'Llegadas', 'Descargas'],
+          datasets: [{
+            label: 'Promedio Diario',
+            data: [
+              parseFloat(promedios.promedioRetrasos || 0),
+              parseFloat(promedios.promedioLlegadas || 0),
+              parseFloat(promedios.promedioDescargas || 0)
+            ],
+            backgroundColor: ['#ff6384', '#36a2eb', '#4fd1c5'],
+            borderColor: ['#cc4f6a', '#2b82c4', '#3ca89a'],
+            borderWidth: 2,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { display: false },
+            title: { 
+              display: true, 
+              text: 'Promedios Diarios',
+              font: { size: 16, weight: 'bold' },
+              color: '#2c3e50'
+            }
+          },
+          scales: {
+            x: { 
+              title: { display: true, text: 'Categoría', font: { size: 13 } },
+              grid: { display: false }
+            },
+            y: { 
+              beginAtZero: true, 
+              title: { display: true, text: 'Cantidad Promedio', font: { size: 13 } },
+              grid: { color: 'rgba(0,0,0,0.05)' }
             }
           }
         }
-      }
+      });
     }
-  });
+
+    // Gráfico de pastel: Llegadas nocturnas
+    const pieCtx = document.getElementById('pieChart');
+    if (pieCtx) {
+      const llegadas = [0, 0, 0, 0, 0, 0];
+      resultados.forEach(dia => {
+        if (dia.llegadasNocturnas >= 0 && dia.llegadasNocturnas <= 5) {
+          llegadas[dia.llegadasNocturnas]++;
+        }
+      });
+      
+      new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+          labels: ['0', '1', '2', '3', '4', '5'],
+          datasets: [{
+            label: 'Llegadas Nocturnas',
+            data: llegadas,
+            backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4fd1c5', '#a3e635', '#f87171'],
+            borderWidth: 2,
+            borderColor: '#fff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { 
+              position: 'bottom',
+              labels: { font: { size: 12 } }
+            },
+            title: { 
+              display: true, 
+              text: 'Distribución de Llegadas Nocturnas',
+              font: { size: 16, weight: 'bold' },
+              color: '#2c3e50'
+            }
+          }
+        }
+      });
+    }
+
+    // Gráfico de líneas: Retrasos diarios
+    const retrasosCtx = document.getElementById('retrasosChart');
+    if (retrasosCtx) {
+      new Chart(retrasosCtx, {
+        type: 'line',
+        data: {
+          labels: resultados.map((_, i) => i + 1),
+          datasets: [{
+            label: 'Retrasos Diarios',
+            data: resultados.map(d => d.retrasosDiaAnterior || 0),
+            borderColor: '#ff6384',
+            backgroundColor: 'rgba(255,99,132,0.15)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4,
+            pointBackgroundColor: '#ff6384',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { display: false },
+            title: { 
+              display: true, 
+              text: 'Retrasos Diarios',
+              font: { size: 16, weight: 'bold' },
+              color: '#2c3e50'
+            }
+          },
+          scales: {
+            x: { 
+              title: { display: true, text: 'Día', font: { size: 13 } },
+              grid: { display: false }
+            },
+            y: { 
+              beginAtZero: true, 
+              title: { display: true, text: 'Cantidad de Barcazas Retrasadas', font: { size: 13 } },
+              grid: { color: 'rgba(0,0,0,0.05)' },
+              ticks: { stepSize: 1 }
+            }
+          }
+        }
+      });
+    }
+
+    // Gráfico de líneas: Utilización del servidor
+    const utilCtx = document.getElementById('utilizacionChart');
+    if (utilCtx) {
+      const utilizacion = resultados.map(d => Math.min(d.descargas / 5, 1));
+      new Chart(utilCtx, {
+        type: 'line',
+        data: {
+          labels: resultados.map((_, i) => i + 1),
+          datasets: [{
+            label: 'Utilización del Servidor',
+            data: utilizacion,
+            borderColor: '#4fd1c5',
+            backgroundColor: 'rgba(79,209,197,0.18)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4,
+            pointBackgroundColor: '#4fd1c5',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { display: false },
+            title: { 
+              display: true, 
+              text: 'Utilización del Servidor Diaria',
+              font: { size: 16, weight: 'bold' },
+              color: '#2c3e50'
+            }
+          },
+          scales: {
+            x: { 
+              title: { display: true, text: 'Día', font: { size: 13 } },
+              grid: { display: false }
+            },
+            y: {
+              beginAtZero: true,
+              max: 1,
+              title: { display: true, text: 'Porcentaje de Utilización', font: { size: 13 } },
+              grid: { color: 'rgba(0,0,0,0.05)' },
+              ticks: {
+                callback: function (value) {
+                  return (value * 100).toFixed(0) + "%";
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error al renderizar gráficos:', error);
+  }
 }
 
 // Muestra la recomendación final y el resumen ejecutivo
@@ -233,7 +336,6 @@ function mostrarDecisionYResumen() {
   let sugerencias = [];
 
   if (resultados.length) {
-    // Calcula barcazas perdidas
     const perdidas = (() => {
       let cola = [], barcazasPerdidas = 0;
       resultados.forEach(dia => {
@@ -247,7 +349,7 @@ function mostrarDecisionYResumen() {
       return barcazasPerdidas;
     })();
 
-    const promedioUtil = resultados.reduce((acc, d) => acc + (d.descargas / 5), 0) / resultados.length;
+    const promedioUtil = resultados.reduce((acc, d) => acc + Math.min(d.descargas / 5, 1), 0) / resultados.length;
     const promedioRetrasos = parseFloat(promedios.promedioRetrasos || 0);
     const promedioLlegadas = parseFloat(promedios.promedioLlegadas || 0);
     const promedioDescargas = parseFloat(promedios.promedioDescargas || 0);
@@ -267,7 +369,7 @@ function mostrarDecisionYResumen() {
       <span style="color:#888;">Realice simulaciones adicionales para encontrar el equilibrio óptimo.</span>`;
     }
 
-    // Resumen ejecutivo con formato
+    // Resumen ejecutivo
     resumen = `
       <div>
         <span style="color:#4fd1c5;font-weight:600;">Promedio de llegadas:</span> <span style="font-weight:700;">${promedioLlegadas.toFixed(2)}</span><br>
@@ -300,10 +402,12 @@ function mostrarDecisionYResumen() {
     }
   }
 
-  const decDiv = document.getElementById("mejorDecision") || document.getElementById("recomendacion");
+  const decDiv = document.getElementById("mejorDecision");
   if (decDiv) decDiv.innerHTML = decision;
+  
   const resumenDiv = document.getElementById("resumenEjecutivo");
   if (resumenDiv) resumenDiv.innerHTML = resumen;
+  
   const sugList = document.getElementById("sugerenciasMejora");
   if (sugList) {
     sugList.innerHTML = "";
@@ -315,13 +419,13 @@ function mostrarDecisionYResumen() {
   }
 }
 
-// Exporta el resumen ejecutivo a PDF 
+// Exporta el resumen ejecutivo a PDF
 window.exportarPDF = function() {
   const resumen = document.getElementById("resumenEjecutivo");
   const decision = document.getElementById("mejorDecision");
   const sugerencias = document.getElementById("sugerenciasMejora");
   const empresa = document.getElementById("empresaNombre")?.textContent || "";
-  // Extra: KPIs principales
+  
   const kpis = [
     { label: "Promedio Retrasos", value: document.getElementById("promedioRetrasos")?.textContent || "-" },
     { label: "Promedio Llegadas", value: document.getElementById("promedioLlegadas")?.textContent || "-" },
@@ -329,26 +433,32 @@ window.exportarPDF = function() {
     { label: "Barcazas Perdidas", value: document.getElementById("totalPerdidas")?.textContent || "-" },
     { label: "Costo Total", value: document.getElementById("costoGlobal")?.textContent || "-" }
   ];
-  // Extra: Primer y último día simulado
+  
   const resultados = JSON.parse(localStorage.getItem("resultadosSimulacion") || "[]");
   let diasSimulados = resultados.length;
   let primerDia = diasSimulados > 0 ? 1 : "-";
   let ultimoDia = diasSimulados > 0 ? diasSimulados : "-";
-  // Extra: Gráficos como imágenes (solo si existen)
+  
   function getChartImg(id) {
     const canvas = document.getElementById(id);
     if (canvas && canvas.toDataURL) {
-      return `<img src="${canvas.toDataURL('image/png')}" style="max-width:100%;margin-bottom:1.2rem;border-radius:12px;box-shadow:0 2px 8px #4fd1c522;">`;
+      return `<img src="${canvas.toDataURL('image/png')}" style="max-width:100%;margin-bottom:1.2rem;border-radius:12px;box-shadow:0 2px 8px rgba(79,209,197,0.2);">`;
     }
     return "";
   }
+  
   if (!resumen) return;
+  
   const win = window.open('', '', 'width=900,height=700');
+  if (!win) {
+    alert('Por favor, permita ventanas emergentes para exportar el PDF.');
+    return;
+  }
+  
   win.document.write(`
     <html>
     <head>
       <title>Resumen Ejecutivo - Simulación Barcazas</title>
-      <link rel="stylesheet" href="/appweb/css/dashboard.css">
       <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6fa; color: #1a2636; margin: 0; padding: 2rem; }
         .pdf-header { text-align: center; margin-bottom: 2.5rem; }
@@ -418,13 +528,5 @@ window.exportarPDF = function() {
     </html>
   `);
   win.document.close();
-  win.print();
-};
-
-// Inicializa el dashboard al cargar la página
-window.onload = function() {
-  mostrarResumen();
-  mostrarRiesgos();
-  mostrarGraficos();
-  mostrarDecisionYResumen();
+  setTimeout(() => win.print(), 500);
 };

@@ -6,117 +6,201 @@
     <title>Resultados de la Simulación de Barcazas</title>
     <link rel="stylesheet" href="../css/resultados.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script defer src="../js/resultados.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* Estilos adicionales para mejorar la visualización */
+        .btn-simulacion {
+            background-color: #06444d;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        .btn-simulacion:hover {
+            background-color: #0a5c68;
+            color: white;
+        }
+        .btn-dashboard {
+            background-color: #4fd1c5;
+            color: #1a2636;
+            padding: 10px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        .btn-dashboard:hover {
+            background-color: #3ab8ac;
+            color: #1a2636;
+        }
+        .graficos-section {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .chart-container h2 {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .chart-container canvas {
+            max-height: 300px;
+        }
+        .overlay.intro {
+            padding: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .card-costos, .card-promedio {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .titulo-seccion {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        .lista-costos, .lista-promedio {
+            list-style: none;
+            padding: 0;
+        }
+        .lista-costos li, .lista-promedio li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f4f8;
+        }
+        .costo-global {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #4fd1c5;
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+        .icono-item {
+            margin-right: 0.5rem;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .gap-3 {
+            gap: 1rem;
+        }
+        .mt-4 {
+            margin-top: 2rem;
+        }
+        .mb-4 {
+            margin-bottom: 2rem;
+        }
+        .d-flex {
+            display: flex;
+        }
+        .justify-content-center {
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body>
     <!-- Sección inicial de introducción -->
     <div class="overlay intro">
-        <h1>Resultados de la Simulación de Barcazas</h1>
+        <h1 style="text-align:center;color:#2c3e50;font-size:2.2rem;margin-bottom:2rem;">Resultados de la Simulación de Barcazas</h1>
 
         <section id="costos" class="mb-4">
             <div class="card-costos">
-                <h2 class="titulo-seccion"><span class="icono-costos">&#128176;</span> Costos Asociados</h2>
+                <h2 class="titulo-seccion"><span class="icono-item">💰</span> Costos Asociados</h2>
                 <ul class="lista-costos">
-                    <li><span class="icono-item">&#9201;</span> Costo por barcaza retrasada por día: <span
-                            id="costoRetrasos"></span> USD
-                    </li>
-                    <li><span class="icono-item">&#9889;</span> Costo total estimado por retrasos: <span
-                            id="costoTotal"></span> USD
-                    </li>
-                    <li><span class="icono-item">&#128230;</span> Costo por operación de descarga: <span
-                            id="costoOperacion"></span> USD
-                    </li>
-                    <li><span class="icono-item">&#128640;</span> Costo total de operaciones de descarga: <span
-                            id="costoTotalOperacion"></span>
-                        USD</li>
-                    <li><span class="icono-item">&#128736;</span> Costo fijo diario (personal, energía, etc): <span
-                            id="costoFijo"></span> USD
-                    </li>
-                    <li><span class="icono-item">&#128178;</span> Costo fijo total: <span id="costoFijoTotal"></span>
-                        USD</li>
+                    <li><span class="icono-item">⏱️</span> Costo por barcaza retrasada por día: <span id="costoRetrasos"></span> USD</li>
+                    <li><span class="icono-item">⚡</span> Costo total estimado por retrasos: <span id="costoTotal"></span> USD</li>
+                    <li><span class="icono-item">📦</span> Costo por operación de descarga: <span id="costoOperacion"></span> USD</li>
+                    <li><span class="icono-item">🚀</span> Costo total de operaciones de descarga: <span id="costoTotalOperacion"></span> USD</li>
+                    <li><span class="icono-item">🔧</span> Costo fijo diario (personal, energía, etc): <span id="costoFijo"></span> USD</li>
+                    <li><span class="icono-item">💸</span> Costo fijo total: <span id="costoFijoTotal"></span> USD</li>
                 </ul>
                 <div class="costo-global">
-                    <strong><span class="icono-item">&#11088;</span> Costo global estimado: <span
-                            id="costoGlobal"></span> USD</strong>
+                    <strong><span class="icono-item">⭐</span> Costo global estimado: <span id="costoGlobal"></span> USD</strong>
                 </div>
             </div>
         </section>
 
         <section id="resultadosPromedio" class="mb-4">
             <div class="card-promedio">
-                <h2 class="titulo-seccion"><span class="icono-prom">&#128202;</span> Resultados Promedio</h2>
+                <h2 class="titulo-seccion"><span class="icono-item">📊</span> Resultados Promedio</h2>
                 <ul class="lista-promedio">
-                    <li><span class="icono-item">&#9201;</span> Promedio de barcazas retrasadas por día: <span
-                            id="promedioRetrasos"></span>
-                    </li>
-                    <li><span class="icono-item">&#128347;</span> Promedio de llegadas nocturnas: <span
-                            id="promedioLlegadas"></span>
-                    </li>
-                    <li><span class="icono-item">&#128230;</span> Promedio de barcazas descargadas por día: <span
-                            id="promedioDescargas"></span>
-                    </li>
+                    <li><span class="icono-item">⏱️</span> Promedio de barcazas retrasadas por día: <span id="promedioRetrasos"></span></li>
+                    <li><span class="icono-item">🌙</span> Promedio de llegadas nocturnas: <span id="promedioLlegadas"></span></li>
+                    <li><span class="icono-item">📦</span> Promedio de barcazas descargadas por día: <span id="promedioDescargas"></span></li>
                 </ul>
             </div>
         </section>
 
-        <div class="text-center">
-            <a href="#graficos" class="btn btn-primary">Ver gráficos</a>
+        <div class="text-center" style="margin-top:2rem;">
+            <a href="#graficos" class="btn-simulacion"><i class="fas fa-chart-bar me-2"></i> Ver gráficos</a>
         </div>
     </div>
 
-    <!-- Sección de gráficos ocultos al inicio -->
+    <!-- Sección de gráficos -->
     <main id="graficos" class="graficos-section">
         <section class="chart-container">
-            <h2>Promedios Diarios</h2>
+            <h2><i class="fas fa-chart-bar me-2" style="color:#4fd1c5;"></i> Promedios Diarios</h2>
             <canvas id="promediosBarChart"></canvas>
         </section>
 
         <section class="chart-container">
-            <h2>Distribución de Llegadas Nocturnas</h2>
+            <h2><i class="fas fa-chart-pie me-2" style="color:#36a2eb;"></i> Distribución de Llegadas Nocturnas</h2>
             <canvas id="llegadasPieChart"></canvas>
         </section>
 
         <section class="chart-container">
-            <h2>Retrasos Diarios</h2>
+            <h2><i class="fas fa-chart-line me-2" style="color:#ff6384;"></i> Retrasos Diarios</h2>
             <canvas id="retrasosLineChart"></canvas>
         </section>
 
         <section class="chart-container">
-            <h2>Descargas Diarias</h2>
+            <h2><i class="fas fa-chart-column me-2" style="color:#4fd1c5;"></i> Descargas Diarias</h2>
             <canvas id="descargasColumnChart"></canvas>
         </section>
 
         <section class="chart-container">
-            <!-- Compara llegadas, descargas, retrasos y costos entre dos periodos de la simulación -->
-            <h2>Comparación por Periodos</h2>
+            <h2><i class="fas fa-arrows-left-right me-2" style="color:#fbbf24;"></i> Comparación por Periodos</h2>
             <canvas id="comparacionPeriodosChart"></canvas>
-            <div id="infoPeriodos" style="margin-top: 1em; color:#212529;">
-                <!-- Aquí se mostrarán los rangos de días de cada periodo -->
-            </div>
+            <div id="infoPeriodos" style="margin-top:1em;color:#2c3e50;text-align:center;"></div>
         </section>
 
         <section class="chart-container">
-            <!-- Muestra la utilización diaria del servidor respecto a su capacidad máxima -->
-            <h2>Utilización del Servidor Diaria</h2>
+            <h2><i class="fas fa-server me-2" style="color:#4fd1c5;"></i> Utilización del Servidor Diaria</h2>
             <canvas id="utilizacionServidorChart"></canvas>
         </section>
 
         <section class="chart-container">
-            <!-- Muestra el tiempo promedio en cola y en el sistema para cada día -->
-            <h2>Tiempos Promedio en Cola y en el Sistema</h2>
+            <h2><i class="fas fa-clock me-2" style="color:#36a2eb;"></i> Tiempos Promedio en Cola y en el Sistema</h2>
             <canvas id="tiemposPromedioChart"></canvas>
         </section>
 
         <div class="text-center d-flex justify-content-center gap-3 mt-4">
-            <a href="../html/prueba.html" class="btn btn-simulacion">
+            <a href="prueba.html" class="btn-simulacion">
                 <i class="fas fa-arrow-left me-2"></i> Regresar a Simulación
             </a>
-            <a href="../html/dashboard.html" class="btn btn-dashboard" target="_blank">
+            <a href="dashboard.html" class="btn-dashboard">
                 <i class="fas fa-chart-pie me-2"></i> Ver Dashboard
             </a>
         </div>
     </main>
+
+    <script src="../js/resultados.js"></script>
 </body>
 
 </html>

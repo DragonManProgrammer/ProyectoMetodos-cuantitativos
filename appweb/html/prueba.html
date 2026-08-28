@@ -10,28 +10,13 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
     <link href="../css/prueba.css" rel="stylesheet" />
     <style>
-        .mt-4-5 {
-            margin-top: 2.5rem;
-        }
-
-        .d-none {
-            display: none !important;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.4s;
-        }
-
+        .mt-4-5 { margin-top: 2.5rem; }
+        .d-none { display: none !important; }
+        .fade-in { animation: fadeIn 0.4s; }
         @keyframes fadeIn {
-            0% {
-                opacity: 0
-            }
-
-            100% {
-                opacity: 1
-            }
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
-
         .alerta-elegante {
             display: none;
             margin-top: 1rem;
@@ -43,25 +28,93 @@
             align-items: center;
             gap: 0.5rem;
         }
-
-        .alerta-icono {
-            font-size: 1.5rem;
-            margin-right: 0.5rem;
+        .alerta-icono { font-size: 1.5rem; margin-right: 0.5rem; }
+        .titulo { margin-bottom: 1rem; }
+        .btn {
+            border-radius: 25px !important;
         }
-
-        .titulo {
-            margin-bottom: 1rem;
+        .btn-primary {
+            background-color: #06444d !important;
+            border-color: #06444d !important;
         }
-
+        .btn-primary:hover {
+            background-color: #0a5c68 !important;
+            border-color: #0a5c68 !important;
+        }
+        .btn-secondary {
+            background-color: #4fd1c5 !important;
+            border-color: #4fd1c5 !important;
+            color: #1a2636 !important;
+        }
+        .btn-secondary:hover {
+            background-color: #3ab8ac !important;
+            border-color: #3ab8ac !important;
+        }
+        .btn-danger {
+            border-radius: 20px !important;
+        }
+        .btn-outline-primary {
+            border-radius: 20px !important;
+        }
+        .custom-modal__header {
+            background: #06444d;
+            color: white;
+            border-radius: 12px 12px 0 0;
+            padding: 1rem 1.5rem;
+        }
+        .custom-modal__title {
+            color: white;
+            margin: 0;
+        }
+        .custom-modal__body {
+            padding: 1.5rem;
+        }
+        .custom-modal__footer {
+            border-top: 1px solid #e9ecef;
+            padding: 1rem 1.5rem;
+        }
+        .markModel {
+            font-size: 1.05rem;
+            margin-bottom: 0.8rem;
+        }
+        .estiloModal table {
+            margin: 0 auto;
+        }
+        .bordeB {
+            background-color: #06444d;
+            color: white;
+            border-radius: 25px !important;
+            padding: 8px 25px;
+        }
+        .bordeB:hover {
+            background-color: #0a5c68;
+            color: white;
+        }
+        .fondo {
+            background: #f4f6fa;
+            min-height: 100vh;
+        }
+        .fondoTablas {
+            background: #e8edf3 !important;
+        }
+        .card {
+            border-radius: 16px !important;
+            border: none !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06) !important;
+        }
+        .card-body {
+            padding: 1.5rem !important;
+        }
+        .table th {
+            background-color: #06444d !important;
+            color: white !important;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(79,209,197,0.05) !important;
+        }
         @media (min-width: 768px) {
-            .container-fluid {
-                max-width: 98vw;
-            }
-
-            .card-body {
-                padding-left: 1.2rem;
-                padding-right: 1.2rem;
-            }
+            .container-fluid { max-width: 98vw; }
+            .card-body { padding-left: 1.2rem; padding-right: 1.2rem; }
         }
     </style>
 </head>
@@ -70,15 +123,16 @@
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
-                <!-- Título de la página -->
+                <!-- Título -->
                 <div class="text-center mb-4">
-                    <h1 class="titulo">Simulación de llegadas y descargas de Barcazas</h1>
+                    <h1 class="titulo" style="color:#2c3e50;">Simulación de llegadas y descargas de Barcazas</h1>
                 </div>
-                <!-- SECCIÓN DE PARÁMETROS INICIALES -->
+                
+                <!-- PARÁMETROS INICIALES -->
                 <section class="mb-4">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h2 class="titulo h4 mb-3">Rango para números aleatorios</h2>
+                            <h2 class="titulo h4 mb-3" style="color:#06444d;">Rango para números aleatorios</h2>
                             <form class="row g-3 align-items-end">
                                 <div class="col-12 col-md-3">
                                     <label for="rangoMin" class="form-label">Mín:</label>
@@ -102,14 +156,13 @@
                     </div>
                 </section>
 
-                <!-- SECCIÓN DE TABLA DE SIMULACIÓN -->
+                <!-- TABLA DE SIMULACIÓN -->
                 <section class="mb-4">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h2 class="titulo h4 mb-3">Tabla de simulación</h2>
+                            <h2 class="titulo h4 mb-3" style="color:#06444d;">Tabla de simulación</h2>
                             <div class="table-responsive">
-                                <table id="tablaSimulacion"
-                                    class="table table-bordered table-striped mx-auto mb-0 align-middle">
+                                <table id="tablaSimulacion" class="table table-bordered table-striped mx-auto mb-0 align-middle">
                                     <thead class="table-dark">
                                         <tr>
                                             <th>Día</th>
@@ -141,36 +194,21 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <!-- TABLA DE COSTOS DE OPERACIÓN alineada a la derecha -->
+                            <!-- COSTOS DE OPERACIÓN -->
                             <div class="row justify-content-center mt-4">
                                 <div class="col-auto">
                                     <div class="d-flex flex-column align-items-center">
-                                        <h5 class="mb-0 fw-bold">Costos de operación</h5>
-                                        <table class="table table-bordered table-hover mt-0 mb-0 w-auto"
-                                            style="min-width: 300px;">
+                                        <h5 class="mb-0 fw-bold" style="color:#06444d;">Costos de operación</h5>
+                                        <table class="table table-bordered table-hover mt-0 mb-0 w-auto" style="min-width:300px;">
                                             <thead class="table-secondary">
-                                                <tr>
-                                                    <th colspan="2" class="text-center">Costos de operación</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>Concepto</th>
-                                                    <th>Costo</th>
-                                                </tr>
+                                                <tr><th colspan="2" class="text-center">Costos de operación</th></tr>
+                                                <tr><th>Concepto</th><th>Costo</th></tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Costo por barcaza retrasada</td>
-                                                    <td id="costoRetraso">$0</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Costo por estadía</td>
-                                                    <td id="costoEstadia">$0</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Costo por barcaza perdida</td>
-                                                    <td id="costoPerdida">$0</td>
-                                                </tr>
-                                                <tr style="font-weight:bold; background:#e3eafc;">
+                                                <tr><td>Costo por barcaza retrasada</td><td id="costoRetraso">$0</td></tr>
+                                                <tr><td>Costo por estadía</td><td id="costoEstadia">$0</td></tr>
+                                                <tr><td>Costo por barcaza perdida</td><td id="costoPerdida">$0</td></tr>
+                                                <tr style="font-weight:bold;background:#e3eafc;">
                                                     <td>Total</td>
                                                     <td id="costoTotalOperacion" style="font-weight:bold">$0</td>
                                                 </tr>
@@ -179,28 +217,26 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- FIN TABLA COSTOS -->
                         </div>
                     </div>
                 </section>
 
-                <!-- BOTÓN PARA MOSTRAR/OCULTAR TABLAS DE LLEGADAS Y DESCARGAS -->
+                <!-- BOTÓN MOSTRAR/OCULTAR TABLAS -->
                 <div class="d-flex justify-content-center gap-2 mb-4">
                     <button id="btnToggleTablas" class="btn btn-secondary">
                         Mostrar Tablas de Tasa de Llegadas y Descargas
                     </button>
                 </div>
 
-                <!-- TABLAS OCULTAS INICIALMENTE (PROBABILIDADES DE LLEGADAS Y DESCARGAS) -->
+                <!-- TABLAS OCULTAS -->
                 <div id="tablasProbabilidades" class="d-none fade-in">
                     <!-- Tabla de tasas de llegadas -->
                     <section class="mb-4">
                         <div class="card shadow">
                             <div class="card-body">
-                                <h2 class="titulo h4 mb-3">Tabla Tasa de Llegadas</h2>
+                                <h2 class="titulo h4 mb-3" style="color:#06444d;">Tabla Tasa de Llegadas</h2>
                                 <div class="table-responsive">
-                                    <table id="tablaLlegadas"
-                                        class="table table-bordered table-striped mx-auto mb-0 align-middle">
+                                    <table id="tablaLlegadas" class="table table-bordered table-striped mx-auto mb-0 align-middle">
                                         <thead>
                                             <tr>
                                                 <th># Llegadas</th>
@@ -211,60 +247,17 @@
                                             </tr>
                                         </thead>
                                         <tbody contenteditable="true">
-                                            <tr>
-                                                <td>0</td>
-                                                <td>0.13</td>
-                                                <td>0.13</td>
-                                                <td>01 al 13</td>
-                                                <td><button onclick="eliminarFila(this)"
-                                                        class="btn btn-danger btn-sm">Eliminar</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>0.17</td>
-                                                <td>0.3</td>
-                                                <td>14 al 30</td>
-                                                <td><button onclick="eliminarFila(this)"
-                                                        class="btn btn-danger btn-sm">Eliminar</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>0.15</td>
-                                                <td>0.45</td>
-                                                <td>31 al 45</td>
-                                                <td><button onclick="eliminarFila(this)"
-                                                        class="btn btn-danger btn-sm">Eliminar</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>0.25</td>
-                                                <td>0.7</td>
-                                                <td>46 al 70</td>
-                                                <td><button onclick="eliminarFila(this)"
-                                                        class="btn btn-danger btn-sm">Eliminar</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>0.2</td>
-                                                <td>0.9</td>
-                                                <td>71 al 90</td>
-                                                <td><button onclick="eliminarFila(this)"
-                                                        class="btn btn-danger btn-sm">Eliminar</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>0.1</td>
-                                                <td>1</td>
-                                                <td>91 al 00</td>
-                                                <td><button onclick="eliminarFila(this)"
-                                                        class="btn btn-danger btn-sm">Eliminar</button></td>
-                                            </tr>
+                                            <tr><td>0</td><td>0.13</td><td>0.13</td><td>01 al 13</td><td><button onclick="eliminarFila(this)" class="btn btn-danger btn-sm">Eliminar</button></td></tr>
+                                            <tr><td>1</td><td>0.17</td><td>0.3</td><td>14 al 30</td><td><button onclick="eliminarFila(this)" class="btn btn-danger btn-sm">Eliminar</button></td></tr>
+                                            <tr><td>2</td><td>0.15</td><td>0.45</td><td>31 al 45</td><td><button onclick="eliminarFila(this)" class="btn btn-danger btn-sm">Eliminar</button></td></tr>
+                                            <tr><td>3</td><td>0.25</td><td>0.7</td><td>46 al 70</td><td><button onclick="eliminarFila(this)" class="btn btn-danger btn-sm">Eliminar</button></td></tr>
+                                            <tr><td>4</td><td>0.2</td><td>0.9</td><td>71 al 90</td><td><button onclick="eliminarFila(this)" class="btn btn-danger btn-sm">Eliminar</button></td></tr>
+                                            <tr><td>5</td><td>0.1</td><td>1</td><td>91 al 00</td><td><button onclick="eliminarFila(this)" class="btn btn-danger btn-sm">Eliminar</button></td></tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="mt-2">
-                                    <button onclick="agregarFila('tablaLlegadas')"
-                                        class="btn btn-outline-primary btn-sm">Agregar Fila</button>
+                                    <button onclick="agregarFila('tablaLlegadas')" class="btn btn-outline-primary btn-sm">Agregar Fila</button>
                                 </div>
                             </div>
                         </div>
@@ -273,10 +266,9 @@
                     <section class="mb-4">
                         <div class="card shadow">
                             <div class="card-body">
-                                <h2 class="titulo h4 mb-3">Tabla Tasa de Descargas</h2>
+                                <h2 class="titulo h4 mb-3" style="color:#06444d;">Tabla Tasa de Descargas</h2>
                                 <div class="table-responsive">
-                                    <table id="tablaDescargas"
-                                        class="table table-bordered table-striped mx-auto mb-0 align-middle">
+                                    <table id="tablaDescargas" class="table table-bordered table-striped mx-auto mb-0 align-middle">
                                         <thead>
                                             <tr>
                                                 <th># Descargas</th>
@@ -287,123 +279,62 @@
                                             </tr>
                                         </thead>
                                         <tbody contenteditable="true">
-                                            <tr>
-                                                <td>1</td>
-                                                <td>0.05</td>
-                                                <td>0.05</td>
-                                                <td>01 al 05</td>
-                                                <td><button onclick="eliminarFila(this)"
-                                                        class="btn btn-danger btn-sm">Eliminar</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>0.15</td>
-                                                <td>0.2</td>
-                                                <td>06 al 20</td>
-                                                <td><button onclick="eliminarFila(this)"
-                                                        class="btn btn-danger btn-sm">Eliminar</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>0.5</td>
-                                                <td>0.7</td>
-                                                <td>21 al 70</td>
-                                                <td><button onclick="eliminarFila(this)"
-                                                        class="btn btn-danger btn-sm">Eliminar</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>0.2</td>
-                                                <td>0.9</td>
-                                                <td>71 al 90</td>
-                                                <td><button onclick="eliminarFila(this)"
-                                                        class="btn btn-danger btn-sm">Eliminar</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>0.1</td>
-                                                <td>1</td>
-                                                <td>91 al 00</td>
-                                                <td><button onclick="eliminarFila(this)"
-                                                        class="btn btn-danger btn-sm">Eliminar</button></td>
-                                            </tr>
+                                            <tr><td>1</td><td>0.05</td><td>0.05</td><td>01 al 05</td><td><button onclick="eliminarFila(this)" class="btn btn-danger btn-sm">Eliminar</button></td></tr>
+                                            <tr><td>2</td><td>0.15</td><td>0.2</td><td>06 al 20</td><td><button onclick="eliminarFila(this)" class="btn btn-danger btn-sm">Eliminar</button></td></tr>
+                                            <tr><td>3</td><td>0.5</td><td>0.7</td><td>21 al 70</td><td><button onclick="eliminarFila(this)" class="btn btn-danger btn-sm">Eliminar</button></td></tr>
+                                            <tr><td>4</td><td>0.2</td><td>0.9</td><td>71 al 90</td><td><button onclick="eliminarFila(this)" class="btn btn-danger btn-sm">Eliminar</button></td></tr>
+                                            <tr><td>5</td><td>0.1</td><td>1</td><td>91 al 00</td><td><button onclick="eliminarFila(this)" class="btn btn-danger btn-sm">Eliminar</button></td></tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="mt-2">
-                                    <button onclick="agregarFila('tablaDescargas')"
-                                        class="btn btn-outline-primary btn-sm">Agregar fila</button>
+                                    <button onclick="agregarFila('tablaDescargas')" class="btn btn-outline-primary btn-sm">Agregar fila</button>
                                 </div>
                             </div>
                         </div>
                     </section>
                 </div>
 
-                <!-- Botones de resultados -->
+                <!-- BOTONES DE RESULTADOS -->
                 <div class="d-flex justify-content-center gap-2 my-4">
-                    <button type="button" class="btn"
-                        style="background-color:#06444d; color:white; border:none; border-radius: 25px; padding: 6px 12px; cursor: pointer;"
-                        id="btnModalResultados">
+                    <button type="button" class="btn btn-primary" id="btnModalResultados">
                         Resultados Promedio
                     </button>
-                    <button id="btnVerResultados" class="btn"
-                        style="background-color:#06444d; color:white; border:none; border-radius: 25px; padding: 6px 12px; cursor: pointer;">
+                    <button id="btnVerResultados" class="btn btn-primary">
                         Ver Resultados
                     </button>
                 </div>
 
-                <!-- Mensaje de advertencia si no hay simulación -->
+                <!-- MENSAJE DE ADVERTENCIA -->
                 <div id="mensajeAdvertencia" class="alerta-elegante">
-                    <span class="alerta-icono">&#9888;</span>
-                    <span class="alerta-texto">
-                        Por favor, genere primero la simulación para poder ver los resultados.
-                    </span>
+                    <span class="alerta-icono">⚠️</span>
+                    <span class="alerta-texto">Por favor, genere primero la simulación para poder ver los resultados.</span>
                 </div>
 
-                <!-- Modal de resultados promedio -->
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <!-- MODAL -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content custom-modal">
                             <div class="modal-header custom-modal__header">
-                                <h5 class="custom-modal__title titulo2" id="staticBackdropLabel">Resultados promedio
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Cerrar"></button>
+                                <h5 class="custom-modal__title titulo2" id="staticBackdropLabel">Resultados promedio</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                             </div>
                             <div class="modal-body custom-modal__body estiloModal">
-                                <p class="markModel">Promedio de barcazas retrasadas por día: <span
-                                        id="promedioRetrasos"></span></p>
-                                <p class="markModel">Promedio de llegadas nocturnas: <span id="promedioLlegadas"></span>
-                                </p>
-                                <p class="markModel">Promedio de barcazas descargadas por día: <span
-                                        id="promedioDescargas"></span></p>
+                                <p class="markModel">Promedio de barcazas retrasadas por día: <span id="promedioRetrasos"></span></p>
+                                <p class="markModel">Promedio de llegadas nocturnas: <span id="promedioLlegadas"></span></p>
+                                <p class="markModel">Promedio de barcazas descargadas por día: <span id="promedioDescargas"></span></p>
                                 <hr>
-                                <h5>Costos de operación</h5>
+                                <h5 style="color:#06444d;">Costos de operación</h5>
                                 <table class="table table-bordered table-hover w-auto mx-auto mb-0">
                                     <thead class="table-secondary">
-                                        <tr>
-                                            <th colspan="2" class="text-center">Costos de operación</th>
-                                        </tr>
-                                        <tr>
-                                            <th>Concepto</th>
-                                            <th>Costo</th>
-                                        </tr>
+                                        <tr><th colspan="2" class="text-center">Costos de operación</th></tr>
+                                        <tr><th>Concepto</th><th>Costo</th></tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Costo por barcaza retrasada</td>
-                                            <td id="costoRetrasoModal">$0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Costo por estadía</td>
-                                            <td id="costoEstadiaModal">$0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Costo por barcaza perdida</td>
-                                            <td id="costoPerdidaModal">$0</td>
-                                        </tr>
-                                        <tr style="font-weight:bold; background:#e3eafc;">
+                                        <tr><td>Costo por barcaza retrasada</td><td id="costoRetrasoModal">$0</td></tr>
+                                        <tr><td>Costo por estadía</td><td id="costoEstadiaModal">$0</td></tr>
+                                        <tr><td>Costo por barcaza perdida</td><td id="costoPerdidaModal">$0</td></tr>
+                                        <tr style="font-weight:bold;background:#e3eafc;">
                                             <td>Total</td>
                                             <td id="costoTotalOperacionModal" style="font-weight:bold">$0</td>
                                         </tr>
@@ -416,11 +347,10 @@
                         </div>
                     </div>
                 </div>
-                <!-- End modal -->
             </div>
         </div>
     </div>
-    <!-- Scripts -->
+
     <script src="../js/prueba.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -429,7 +359,6 @@
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
     <script>
-        // Script para mostrar/ocultar las tablas de probabilidades de llegadas y descargas
         const btnToggleTablas = document.getElementById('btnToggleTablas');
         const tablasProbabilidades = document.getElementById('tablasProbabilidades');
         let tablasVisibles = false;
